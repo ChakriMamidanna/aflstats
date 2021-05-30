@@ -1,2 +1,2 @@
 # aflstats
-Afl stats I found interesting
+Afl stats I find interesting, will be updating weekly
