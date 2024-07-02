@@ -1,0 +1,461 @@
+---
+title: "Untitled"
+author: "Chakri Mamidanna"
+date: "2024-01-08"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(fitzRoy)
+library(tidyverse)
+library(elo)
+library(lubridate)
+options(scipen = 99)
+```
+
+```{r}
+
+# r <- fitzRoy::fetch_results(season = c(2019), comp = "AFLM")
+# b <- fetch_results_squiggle(2018, round = 9)
+# a <- fitzRoy::fetch_player_stats_afltables(2010)
+# a_clean_home <- a %>% 
+#   group_by(Season, Round, Date, Venue, Home.team, Away.team, Playing.for) %>% 
+#   summarise(hInside.50s      = sum(Inside.50s     ), 
+#             hMarks.Inside.50 = sum(Marks.Inside.50), 
+#             hTackles         = sum(Tackles        ), 
+#             hOne.Percenters  = sum(One.Percenters) ) %>% 
+#   filter(Home.team == Playing.for) %>% 
+#   select(-Playing.for)
+# 
+# a_clean_away <- a %>% 
+#   group_by(Season, Round, Date, Venue, Home.team, Away.team, Playing.for) %>% 
+#   summarise(aInside.50s      = sum(Inside.50s     ), 
+#             aMarks.Inside.50 = sum(Marks.Inside.50), 
+#             aTackles         = sum(Tackles        ), 
+#             aOne.Percenters  = sum(One.Percenters) ) %>% 
+#   filter(Away.team == Playing.for)%>% 
+#   select(-Playing.for)
+
+# b <- left_join(a_clean_home, a_clean_away, by = c("Season", "Round", "Date", "Venue", "Home.team", "Away.team"))
+
+# ?fetch_results_footywire
+# a <- fitzRoy::fetch_player_stats_afl(2015) %>% 
+#   filter(status == "CONCLUDED") %>% 
+#   mutate(Season = year(utcStartTime)) %>% 
+#   group_by(Season, venue.name,"Home.team"= home.team.name, away.team.name,  "Playing.for"=team.name) %>% 
+#   summarise(hInside.50s      = sum(inside50s),
+#             hMarks.Inside.50 = sum(marksInside50),
+#             hTackles         = sum(tacklesInside50),
+#             hOne.Percenters  = sum(onePercenters)) %>% 
+#   filter(Home.team == Playing.for) 
+
+# a_afl <- fitzRoy::fetch_player_stats_afl(2015) 
+a <- c()
+afl_player_stats <- c()
+for(year in 2015:2023){
+a <- fitzRoy::fetch_player_stats_afl(year)
+a_clean_home <- a %>% 
+  filter(status == "CONCLUDED") %>% 
+  mutate(Season = year(utcStartTime), 
+         Date = as.Date(utcStartTime)) %>% 
+  group_by(Season,  round.roundNumber, Date,  venue.name,  home.team.name, away.team.name,   team.name) %>%   
+  summarise(hInside.50s      = sum(inside50s),
+            hMarks.Inside.50 = sum(marksInside50),
+            hTackles         = sum(tacklesInside50),
+            hOne.Percenters  = sum(onePercenters)) %>% 
+    filter(away.team.name == team.name) %>% 
+  select(Season,"Round"= round.roundNumber, Date,"Venue"= venue.name,"Home.team"= home.team.name,"Away.team"=  away.team.name, hInside.50s, hMarks.Inside.50, hTackles, hOne.Percenters  )
+
+a_clean_away <- a %>% 
+  filter(status == "CONCLUDED") %>% 
+  mutate(Season = year(utcStartTime), 
+         Date = as.Date(utcStartTime)) %>% 
+ group_by(Season,  round.roundNumber, Date,  venue.name,  home.team.name, away.team.name,   team.name) %>%   
+  summarise(aInside.50s      = sum(inside50s),
+            aMarks.Inside.50 = sum(marksInside50),
+            aTackles         = sum(tacklesInside50),
+            aOne.Percenters  = sum(onePercenters)) %>% 
+  filter(away.team.name == team.name) %>% 
+  select(Season,"Round"= round.roundNumber, Date,"Venue"= venue.name,"Home.team"= home.team.name,"Away.team"=  away.team.name,aInside.50s, aMarks.Inside.50, aTackles, aOne.Percenters  )
+
+a_clean <- left_join(a_clean_home, a_clean_away, by = c("Season", "Round", "Date", "Venue", "Home.team", "Away.team"))
+
+afl_player_stats <- rbind(a_clean,afl_player_stats)
+}
+
+stats_sum <- afl_player_stats %>% 
+  mutate(Home.team = ifelse(Home.team == "Western Bulldogs", "Footscray", Home.team), 
+         Away.team = ifelse(Away.team == "Western Bulldogs", "Footscray", Away.team)) %>% 
+    mutate(Home.team = ifelse(Home.team == "Gold Coast Suns", "Gold Coast", Home.team), 
+         Away.team = ifelse(Away.team == "Gold Coast Suns", "Gold Coast", Away.team)) %>% 
+    mutate(Home.team = ifelse(Home.team == "West Coast Eagles", "West Coast", Home.team), 
+         Away.team = ifelse(Away.team == "West Coast Eagles", "West Coast", Away.team)) %>% 
+    mutate(Home.team = ifelse(Home.team == "Sydney Swans", "Sydney", Home.team), 
+         Away.team = ifelse(Away.team == "Sydney Swans", "Sydney", Away.team)) %>% 
+    mutate(Home.team = ifelse(Home.team == "Adelaide Crows", "Adelaide", Home.team), 
+         Away.team = ifelse(Away.team == "Adelaide Crows", "Adelaide", Away.team)) %>% 
+    mutate(Home.team = ifelse(Home.team == "Geelong Cats", "Geelong", Home.team), 
+         Away.team = ifelse(Away.team == "Geelong Cats", "Geelong", Away.team)) %>%   mutate(Home.team = ifelse(Home.team == "GWS Giants", "GWS", Home.team), 
+         Away.team = ifelse(Away.team == "GWS Giants", "GWS", Away.team)) %>% 
+  ungroup() %>%
+  select(-Round)
+
+
+results_orig <- fitzRoy::fetch_results_afltables(2015:2023)%>%
+  mutate(Round.Number = ifelse(Round.Number < 10, paste0("0",Round.Number), Round.Number)) %>% 
+  mutate(seas_rnd =as.numeric(paste0(Season, Round.Number)))
+
+result_orig_withstats <- results_orig %>% 
+  select(-Venue) %>% 
+  left_join(stats_sum, by = c("Date", 
+                              "Home.Team"= "Home.team", 
+                              "Season",  
+                              "Away.Team"="Away.team"))  %>%
+  # filter(Round.Type != "Finals")
+  filter(Game != 14786)
+
+
+# fixture_footywire <- fitzRoy::fetch_fixture_footywire(2024)
+fix_24 <- fitzRoy::fetch_fixture_squiggle(2024)
+
+fix_24clean <- fix_24 %>% 
+  select("Date" = date, "Season" = year ,  "Round" = round, "Home.Team"= hteam ,     
+         "Away.Team" = ateam ,  Venue = "venue") %>%
+  filter(Round <= 24) %>% 
+  # mutate(Date = ymd(format(Date, "%Y-%m-%d")))%>%
+  rename(Round.Number = `Round`) %>% 
+  mutate(Home.Team = ifelse(Home.Team == "Western Bulldogs", "Footscray", Home.Team), 
+         Away.Team = ifelse(Away.Team == "Western Bulldogs", "Footscray", Away.Team)) %>% 
+  mutate(Home.Team = ifelse(Home.Team == "Greater Western Sydney", "GWS", Home.Team), 
+         Away.Team = ifelse(Away.Team == "Greater Western Sydney", "GWS", Away.Team))
+
+
+
+marg_elo = 120
+map_margin_to_outcome <- function(margin, marg.max = marg_elo*2/3, marg.min = -marg_elo*2/3){
+  norm <- (margin - marg.min)/(marg.max - marg.min)
+  norm %>% pmin(1) %>% pmax(0)
+}
+
+# map_elo_to_score <- function(elo_perc, marg.max = marg_elo, marg.min = -marg_elo){
+#   score <- (elo_perc*(marg.max - marg.min)) + marg.min
+#   score %>% pmin(marg_elo) %>% pmax(-marg_elo)
+# }
+# map_margin_to_outcome(21)
+# map_elo_to_score(0.5875)
+
+```
+
+
+# Getting elo numbers for all
+```{r}
+
+
+exp_score_lm_homefull <- result_orig_withstats  %>% 
+  lm(Home.Points ~ Home.Goals + Home.Behinds + hInside.50s + hMarks.Inside.50 + hTackles + hOne.Percenters, data = .)
+
+exp_score_lm_awayfull <- result_orig_withstats  %>% 
+  lm(Away.Points ~ Home.Goals + Home.Behinds + aInside.50s + aMarks.Inside.50 + aTackles + aOne.Percenters, data = .)
+ 
+results_withlmfull <- result_orig_withstats %>% 
+  mutate(newexpscore_home = round(predict(exp_score_lm_homefull, newdata = .),2),
+         newexpscore_away =round( predict(exp_score_lm_awayfull, newdata = .),2))%>%
+  mutate(homediff = Home.Points - newexpscore_home,
+         awaydiff = Away.Points - newexpscore_away, 
+         exp_margin = newexpscore_home - newexpscore_away, 
+         real_margin = Margin, 
+         marg_diff = Margin - exp_margin)
+
+
+# Set parameters
+HGA <- 2 # home ground advantage
+carryOver <- 0.15 # season carry over
+k_val <- 25# update weighting factor
+
+# Run ELO
+elo.data_exp_lmfull <- elo.run(
+  map_margin_to_outcome(exp_margin) ~
+    adjust(Home.Team, HGA) +
+    Away.Team +
+    regress(Season, 1500, carryOver) +
+    group(seas_rnd),
+  initial.elos = 1500,
+  k = k_val, history = T,
+  data = results_withlmfull
+)
+
+# abs <- as.data.frame(elo.data_exp_lm)  %>% 
+  # mutate(ar = row_number())#
+fullelo <- cbind(results_withlmfull,as.data.frame(elo.data_exp_lmfull))%>% 
+  mutate(seas_rnd = as.numeric(seas_rnd)) %>% 
+mutate(rnd_rank = dense_rank(seas_rnd)) %>% 
+mutate(pred_marg = map_elo_to_score(p.A),
+       bigdiff = elo.A - elo.B)
+# b <- as.data.frame(as.matrix(elo.data_exp_lmfull)) #%>% tail()
+current_elo_vec <-  final.elos(elo.data_exp_lmfull)
+team_name <- results_withlmfull %>% distinct(Home.Team) %>% arrange(Home.Team) %>%  pull(Home.Team)
+
+current_elo_home <- data.frame(team_name, current_elo_vec) %>% rename("home_elo" = current_elo_vec)
+current_elo_away <- data.frame(team_name, current_elo_vec) %>% rename("away_elo" = current_elo_vec)
+
+
+fixture_exp_pred_lm <- fix_24clean %>%
+  arrange(Date) %>% 
+  left_join(current_elo_home, by = c("Home.Team" = "team_name")) %>% 
+  left_join(current_elo_away, by = c("Away.Team" = "team_name")) %>% 
+  mutate(elo_prob_home = elo.prob(home_elo+HGA, away_elo), 
+         elo_prob_away = elo.prob( away_elo, home_elo+HGA), 
+         pred_margin = map_elo_to_score(elo_prob_home), 
+         winner_name = ifelse(elo_prob_home > 0.5, Home.Team, Away.Team), 
+         winner_prob = ifelse(elo_prob_home > 0.5, elo_prob_home, elo_prob_away),
+         winner_margin =round( abs(pred_margin)) ) 
+
+round0_2024 <- fixture_exp_pred_lm %>% 
+  filter(Round.Number == 0)
+
+# write.csv(round0_2024, "round0_2024.csv")
+
+# ladder_2024 <- fixture_exp_pred_lm %>%
+#   mutate(points = 4) %>%
+#   group_by(winner_name) %>%
+#   summarise(points = sum(points),
+#             wins = n())
+# elo::elo.prob(1511.628, 1521.885)
+# ?elo.prob
+# 
+# elo.update(c(1, 0), c(1500, 1500), c(1500, 1600), k = 20)
+# 
+# elo.calc(c(1, 0), c(1500), c(1500), k = 25,adjust.A = 10)
+# elo.prob(1500+10, 1500, k = 20)
+
+```
+
+
+# 2023 preds 
+```{r}
+fixture <- results_orig %>% filter(Date > "2023-01-01")
+
+fixture_withstatslm <- fixture %>%
+  left_join(stats_sum, by = c("Date", 
+                              "Home.Team"= "Home.team", 
+                              "Season",  
+                              "Away.Team"="Away.team"))  %>%
+  mutate(newexpscore_home = round(predict(exp_score_lm_homefull, newdata = .),2),
+         newexpscore_away =round( predict(exp_score_lm_awayfull, newdata = .),2)) %>%
+  mutate(homediff = Home.Points - newexpscore_home,
+         awaydiff = Away.Points - newexpscore_away,
+         exp_margin = newexpscore_home - newexpscore_away,
+         real_margin = Margin)
+
+
+result_orig_withstats22 <- fitzRoy::fetch_results_afltables(2015:2022)%>%
+  mutate(Round.Number = ifelse(Round.Number < 10, paste0("0",Round.Number), Round.Number)) %>% 
+  mutate(seas_rnd =as.numeric(paste0(Season, Round.Number))) %>% 
+  select(-Venue) %>% 
+  left_join(stats_sum, by = c("Date", 
+                              "Home.Team"= "Home.team", 
+                              "Season",  
+                              "Away.Team"="Away.team"))  %>%
+  # filter(Round.Type != "Finals")
+  filter(Game != 14786)
+
+
+exp_score_lm_home22 <- result_orig_withstats22  %>% 
+  lm(Home.Points ~ Home.Goals + Home.Behinds + hInside.50s + hMarks.Inside.50 + hTackles + hOne.Percenters, data = .)
+
+exp_score_lm_away22 <- result_orig_withstats22  %>% 
+  lm(Away.Points ~ Home.Goals + Home.Behinds + aInside.50s + aMarks.Inside.50 + aTackles + aOne.Percenters, data = .)
+ 
+results_withlm22 <- result_orig_withstats22 %>% 
+  mutate(newexpscore_home = round(predict(exp_score_lm_home22, newdata = .),2),
+         newexpscore_away =round( predict(exp_score_lm_away22, newdata = .),2))%>%
+  mutate(homediff = Home.Points - newexpscore_home,
+         awaydiff = Away.Points - newexpscore_away, 
+         exp_margin = newexpscore_home - newexpscore_away, 
+         real_margin = Margin, 
+         marg_diff = Margin - exp_margin)
+
+
+
+
+# Set parameters
+HGA <- 2 # home ground advantage
+carryOver <- 0.15 # season carry over
+k_val <- 25# update weighting factor
+
+# Run ELO
+elo.data_exp_22 <- elo.run(
+  map_margin_to_outcome(exp_margin) ~
+    adjust(Home.Team, HGA) +
+    Away.Team +
+    regress(Season, 1500, carryOver) +
+    group(seas_rnd),
+  initial.elos = 1500,
+  k = k_val, history = T,
+  data = results_withlm22
+)
+
+
+
+fixture_exp_pred_lm22 <- fixture_withstatslm %>%
+  filter(Round.Type == "Regular") %>%
+  mutate(Prob = predict(elo.data_exp_22, newdata = .)) %>%
+  mutate(pred_margin = map_elo_to_score(Prob)) %>%
+  # filter(Round.Type == "Regular") %>%
+  mutate(accurate_pred = case_when(Margin < 0 & Prob < 0.5 ~ 1,
+                                   Margin > 0 & Prob > 0.5 ~ 1,
+                                   Margin == 0 & Prob == 0.5 ~ 1,
+                                   TRUE ~ 0 ))
+
+fixture_exp_pred_lm22 %>%
+  group_by(Season) %>%
+  summarise(acc = sum(accurate_pred)/n(),
+            tot_right = sum(accurate_pred),
+            tot_games = n())
+
+
+
+```
+
+
+
+```{r}
+
+exp_score_lm_hometest <- result_orig_withstats  %>% 
+  filter(Date < '2023-01-01') %>% 
+  mutate(home.scoring.shots = Home.Goals + Home.Behinds) %>% 
+  lm(Home.Points ~ hshotsAtGoal + hInside.50s + hMarks.Inside.50 + hTackles +hTacklesi50 +
+     hcontestedPossessions  + hclearances+ hhitouts + hturnovers, data = .)
+
+exp_score_lm_awaytest <- result_orig_withstats %>% 
+  filter(Date < '2023-01-01') %>% 
+  mutate(away.scoring.shots = Away.Goals + Away.Behinds) %>% 
+  lm(Away.Points ~  ashotsAtGoal + aInside.50s + aMarks.Inside.50 + aTackles + aTacklesi50 +
+       acontestedPossessions  + aclearances+ ahitouts + aturnovers, data = .)
+
+results_withlmtest <- result_orig_withstats %>% 
+  filter(Date < '2023-01-01') %>% 
+  filter(!is.na(hhitouts)) %>% 
+  mutate(newexpscore_home = round(predict(exp_score_lm_hometest, newdata = .),2),
+         newexpscore_away =round( predict(exp_score_lm_awaytest, newdata = .),2))%>%
+  mutate(homediff = Home.Points - newexpscore_home,
+         awaydiff = Away.Points - newexpscore_away, 
+         exp_margin = newexpscore_home - newexpscore_away, 
+         real_margin = Margin, 
+         marg_diff = Margin - exp_margin) %>% 
+  rename("Home.team"=Home.Team, 
+         "Away.team"=Away.Team)
+
+
+
+
+f23 <- fitzRoy::fetch_fixture(2023)
+
+
+away_state23 <- f23 %>% 
+  distinct(home.team.name, venue.state) %>% 
+  arrange(tolower(home.team.name)) %>% 
+  select("Away.team" = home.team.name,"away.state" =venue.state) %>% 
+  mutate(is_home_state = 1) %>%
+  filter( away.state != "SA" | Away.team == "Adelaide Crows" ) %>%
+  mutate(Away.team = ifelse(Away.team == "Western Bulldogs", "Footscray", Away.team)) %>%
+  mutate(Away.team = ifelse(Away.team == "Gold Coast Suns", "Gold Coast", Away.team)) %>%
+  mutate(Away.team = ifelse(Away.team == "West Coast Eagles", "West Coast", Away.team)) %>%
+  mutate(Away.team = ifelse(Away.team == "Sydney Swans", "Sydney", Away.team)) %>%
+  mutate(Away.team = ifelse(Away.team == "Adelaide Crows", "Adelaide", Away.team)) %>%
+  mutate(Away.team = ifelse(Away.team == "Geelong Cats", "Geelong", Away.team)) %>%  
+  mutate(Away.team = ifelse(Away.team == "GWS Giants", "GWS", Away.team))
+
+fix_23clean <- f23 %>% 
+  mutate(year = year(utcStartTime)) %>% 
+  select("Date" = utcStartTime, "Season" = year ,  "Round" = round.roundNumber, 
+         "Home.team"= home.team.name ,"hscore"= home.score.totalScore,    
+         "Away.team" = away.team.name ,"ascore"= away.score.totalScore, 
+         Venue = "venue.name", "state" =venue.state) %>%
+  mutate(Home.team = ifelse(Home.team == "Western Bulldogs", "Footscray", Home.team),
+         Away.team = ifelse(Away.team == "Western Bulldogs", "Footscray", Away.team)) %>%
+  mutate(Home.team = ifelse(Home.team == "Gold Coast Suns", "Gold Coast", Home.team),
+         Away.team = ifelse(Away.team == "Gold Coast Suns", "Gold Coast", Away.team)) %>%
+  mutate(Home.team = ifelse(Home.team == "West Coast Eagles", "West Coast", Home.team),
+         Away.team = ifelse(Away.team == "West Coast Eagles", "West Coast", Away.team)) %>%
+  mutate(Home.team = ifelse(Home.team == "Sydney Swans", "Sydney", Home.team),
+         Away.team = ifelse(Away.team == "Sydney Swans", "Sydney", Away.team)) %>%
+  mutate(Home.team = ifelse(Home.team == "Adelaide Crows", "Adelaide", Home.team),
+         Away.team = ifelse(Away.team == "Adelaide Crows", "Adelaide", Away.team)) %>%
+  mutate(Home.team = ifelse(Home.team == "Geelong Cats", "Geelong", Home.team),
+         Away.team = ifelse(Away.team == "Geelong Cats", "Geelong", Away.team)) %>%  
+  mutate(Home.team = ifelse(Home.team == "GWS Giants", "GWS", Home.team),
+         Away.team = ifelse(Away.team == "GWS Giants", "GWS", Away.team)) %>% 
+  left_join(away_state, by = c("Away.team", "state" = "away.state")) %>% 
+  mutate(is_home_state = ifelse(is.na(is_home_state), 0 , 1), 
+         Margin = hscore - ascore)
+
+
+
+# Set parameters
+HGA <- 7# home ground advantage
+HGA_same_state <- 3# home ground advantage
+carryOver <- 0.13 # season carry over
+k_val <- 20# update weighting factor
+
+# Run ELO
+elo.data_exp_lmtest <- elo.run(
+  map_margin_to_outcome(exp_margin) ~
+    adjust(Home.team, HGA) +
+    Away.team +
+    regress(Season, 1500, carryOver) +
+    group(seas_rnd),
+  initial.elos = 1500,
+  k = k_val, history = T,
+  data = results_withlmtest
+)
+
+
+# abs <- as.data.frame(elo.data_exp_lm)  %>% 
+  # mutate(ar = row_number())#
+testelo <- cbind(results_withlmtest,as.data.frame(elo.data_exp_lmtest))%>% 
+  mutate(seas_rnd = as.numeric(seas_rnd)) %>% 
+mutate(rnd_rank = dense_rank(seas_rnd)) %>% 
+mutate(pred_marg = map_elo_to_score(p.A),
+       bigdiff = elo.A - elo.B)
+# b <- as.data.frame(as.matrix(elo.data_exp_lmtest)) #%>% tail()
+# c <- final.elos(elo.data_exp_lmtest)
+# elo::rank.teams(elo.data)
+# elo.prob(1503, 1500)
+# wins.A <- c(1)
+# elo.update(1, 1503, 1500, k = 25)
+
+# fix_24clean
+fixture_exp_pred_lmtest <- fix_23clean %>% 
+  mutate(is_home_state = ifelse(is.na(is_home_state), 0 , 1))%>%
+  # filter(Round.Type == "Regular") %>%
+  filter(Round <= 24) %>%
+  mutate(Prob = predict(elo.data_exp_lmtest, newdata = .) #, 
+         # elo_prob_home =ifelse(is_home_state == 0 & Home.team != "Geelong",  elo.prob(home_elo+HGA, away_elo), elo.prob(home_elo+HGA_same_state, away_elo) ),
+         ) %>%
+  mutate(pred_margin = map_elo_to_score(Prob)) %>%
+  # filter(Round.Type == "Regular") %>%
+  mutate(accurate_pred = case_when(Margin < 0 & Prob < 0.5 ~ 1,
+                                   Margin > 0 & Prob > 0.5 ~ 1,
+                                   Margin == 0 & Prob == 0.5 ~ 1,
+                                   TRUE ~ 0 ), 
+         abs_marg_diff = abs(pred_margin - Margin))
+# 
+fixture_exp_pred_lmtest %>%
+  group_by(Season) %>%
+  summarise(mae = sum(abs_marg_diff)/n(),
+            acc = sum(accurate_pred)/n(),
+            tot_right = sum(accurate_pred),
+            tot_games = n())
+
+
+
+
+
+```
+
+
+
