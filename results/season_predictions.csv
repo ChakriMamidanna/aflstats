@@ -1,0 +1,82 @@
+"Season","Round","Home.team","Away.team","Venue","state","winner_name","winner_prob","winner_margin"
+2024,0,"Sydney","Melbourne","SCG","NSW","Melbourne","0.534",12
+2024,0,"Brisbane Lions","Carlton","Gabba","QLD","Brisbane Lions","0.527",10
+2024,0,"Gold Coast","Richmond","People First Stadium","QLD","Gold Coast","0.541",15
+2024,0,"GWS","Collingwood","ENGIE Stadium","NSW","GWS","0.516",6
+2024,1,"Carlton","Richmond","MCG","VIC","Carlton","52.86%",7
+2024,1,"Collingwood","Sydney","MCG","VIC","Collingwood","50.73%",2
+2024,1,"Essendon","Hawthorn","MCG","VIC","Essendon","52.27%",6
+2024,1,"GWS","North Melbourne","ENGIE Stadium","NSW","GWS","67.50%",42
+2024,1,"Geelong","St Kilda","GMHBA Stadium","VIC","Geelong","59.70%",24
+2024,1,"Gold Coast","Adelaide","People First Stadium","QLD","Adelaide","55.20%",13
+2024,1,"Melbourne","Footscray","MCG","VIC","Melbourne","53.98%",10
+2024,1,"Port Adelaide","West Coast","Adelaide Oval","SA","Port Adelaide","74.73%",56
+2024,1,"Fremantle","Brisbane Lions","Optus Stadium","WA","Brisbane Lions","56.16%",15
+2024,2,"St Kilda","Collingwood","MCG","VIC","Collingwood","54.20%",11
+2024,2,"Adelaide","Geelong","Adelaide Oval","SA","Adelaide","50.12%",1
+2024,2,"North Melbourne","Fremantle","Marvel Stadium","VIC","Fremantle","65.35%",37
+2024,2,"Hawthorn","Melbourne","MCG","VIC","Melbourne","63.57%",33
+2024,2,"Sydney","Essendon","SCG","NSW","Sydney","63.02%",32
+2024,2,"Footscray","Gold Coast","Mars Stadium","VIC","Footscray","58.14%",20
+2024,2,"Richmond","Port Adelaide","MCG","VIC","Port Adelaide","56.51%",16
+2024,2,"West Coast","GWS","Optus Stadium","WA","GWS","70.60%",48
+2024,3,"Brisbane Lions","Collingwood","Gabba","QLD","Brisbane Lions","55.63%",14
+2024,3,"North Melbourne","Carlton","Marvel Stadium","VIC","Carlton","66.83%",40
+2024,3,"Fremantle","Adelaide","Optus Stadium","WA","Adelaide","50.95%",2
+2024,3,"Essendon","St Kilda","Marvel Stadium","VIC","St Kilda","53.57%",9
+2024,3,"Port Adelaide","Melbourne","Adelaide Oval","SA","Melbourne","50.67%",2
+2024,3,"Footscray","West Coast","Marvel Stadium","VIC","Footscray","71.65%",50
+2024,3,"Richmond","Sydney","MCG","VIC","Sydney","53.31%",8
+2024,3,"Hawthorn","Geelong","MCG","VIC","Geelong","62.39%",30
+2024,4,"Adelaide","Melbourne","Adelaide Oval","SA","Melbourne","55.46%",14
+2024,4,"Brisbane Lions","North Melbourne","Norwood Oval","SA","Brisbane Lions","70.77%",49
+2024,4,"Port Adelaide","Essendon","Adelaide Oval","SA","Port Adelaide","63.03%",32
+2024,4,"West Coast","Sydney","Adelaide Hills","SA","Sydney","69.77%",47
+2024,4,"Fremantle","Carlton","Adelaide Oval","SA","Carlton","51.15%",3
+2024,4,"Footscray","Geelong","Adelaide Oval","SA","Geelong","52.61%",7
+2024,4,"Gold Coast","GWS","Adelaide Hills","SA","GWS","55.50%",14
+2024,4,"Richmond","St Kilda","Norwood Oval","SA","Richmond","52.26%",6
+2024,4,"Collingwood","Hawthorn","Adelaide Oval","SA","Collingwood","58.78%",22
+2024,5,"Melbourne","Brisbane Lions","MCG","VIC","Melbourne","51.68%",4
+2024,5,"Footscray","Essendon","Marvel Stadium","VIC","Footscray","59.63%",24
+2024,5,"GWS","St Kilda","Manuka Oval","ACT","GWS","52.51%",6
+2024,5,"Carlton","Adelaide","Marvel Stadium","VIC","Carlton","52.25%",6
+2024,5,"Gold Coast","Hawthorn","People First Stadium","QLD","Gold Coast","51.87%",5
+2024,5,"Port Adelaide","Fremantle","Adelaide Oval","SA","Port Adelaide","57.94%",20
+2024,5,"Geelong","North Melbourne","GMHBA Stadium","VIC","Geelong","71.72%",50
+2024,5,"West Coast","Richmond","Optus Stadium","WA","Richmond","65.94%",38
+2024,6,"St Kilda","Footscray","Marvel Stadium","VIC","Footscray","53.64%",9
+2024,6,"Adelaide","Essendon","Adelaide Oval","SA","Adelaide","57.75%",19
+2024,6,"Collingwood","Port Adelaide","MCG","VIC","Port Adelaide","54.51%",11
+2024,6,"Carlton","GWS","Marvel Stadium","VIC","Carlton","52.93%",7
+2024,6,"Brisbane Lions","Geelong","Gabba","QLD","Brisbane Lions","51.76%",4
+2024,6,"West Coast","Fremantle","Optus Stadium","WA","Fremantle","66.02%",39
+2024,6,"Sydney","Gold Coast","SCG","NSW","Sydney","59.47%",23
+2024,6,"North Melbourne","Hawthorn","Marvel Stadium","VIC","Hawthorn","59.86%",24
+2024,7,"Richmond","Melbourne","MCG","VIC","Melbourne","58.09%",20
+2024,7,"Essendon","Collingwood","MCG","VIC","Collingwood","57.20%",18
+2024,7,"GWS","Brisbane Lions","Manuka Oval","ACT","Brisbane Lions","55.78%",14
+2024,7,"Port Adelaide","St Kilda","Adelaide Oval","SA","Port Adelaide","59.52%",24
+2024,7,"North Melbourne","Adelaide","Blundstone Arena","TAS","Adelaide","66.40%",39
+2024,7,"Geelong","Carlton","MCG","VIC","Geelong","54.91%",12
+2024,7,"Fremantle","Footscray","Optus Stadium","WA","Footscray","53.03%",8
+2024,7,"Gold Coast","West Coast","People First Stadium","QLD","Gold Coast","60.93%",27
+2024,7,"Hawthorn","Sydney","MCG","VIC","Sydney","57.78%",19
+2024,8,"Adelaide","Port Adelaide","Adelaide Oval","SA","Port Adelaide","56.01%",15
+2024,8,"Carlton","Collingwood","MCG","VIC","Carlton","51.17%",3
+2024,8,"Sydney","GWS","SCG","NSW","GWS","51.48%",4
+2024,8,"St Kilda","North Melbourne","Marvel Stadium","VIC","St Kilda","72.15%",51
+2024,8,"Melbourne","Geelong","MCG","VIC","Melbourne","54.35%",11
+2024,8,"West Coast","Essendon","Optus Stadium","WA","Essendon","59.87%",24
+2024,8,"Richmond","Fremantle","MCG","VIC","Fremantle","55.89%",15
+2024,8,"Footscray","Hawthorn","Marvel Stadium","VIC","Footscray","58.70%",22
+2024,8,"Brisbane Lions","Gold Coast","Gabba","QLD","Brisbane Lions","60.20%",25
+2024,9,"Carlton","Melbourne","MCG","VIC","Melbourne","53.54%",9
+2024,9,"Geelong","Port Adelaide","GMHBA Stadium","VIC","Geelong","61.93%",29
+2024,9,"Fremantle","Sydney","Optus Stadium","WA","Sydney","53.79%",10
+2024,9,"Hawthorn","St Kilda","UTAS Stadium","TAS","St Kilda","55.72%",14
+2024,9,"Essendon","GWS","Marvel Stadium","VIC","GWS","62.50%",31
+2024,9,"Richmond","Footscray","MCG","VIC","Footscray","62.59%",31
+2024,9,"Gold Coast","North Melbourne","TIO Stadium","NT","Gold Coast","73.16%",53
+2024,9,"Collingwood","West Coast","Marvel Stadium","VIC","Collingwood","77.89%",61
+2024,9,"Adelaide","Brisbane Lions","Adelaide Oval","SA","Adelaide","51.40%",4
