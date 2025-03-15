@@ -1,0 +1,14 @@
+"RoundNumber","HomeTeam","AwayTeam","Winner","HomeProbability","VenueName","PredictedMargin"
+0,"Brisbane Lions","Geelong","Brisbane Lions",0.599980351882653,"Gabba",15.4479144254649
+0,"Sydney","Hawthorn","Sydney",0.521277661605678,"SCG",3.33979873841079
+0,"Gold Coast","Essendon","Gold Coast",0.587735408986312,"People First Stadium",13.6076084068598
+0,"GWS","Collingwood","GWS",0.516684569462536,"ENGIE Stadium",2.61960611863202
+1,"Richmond","Carlton","Carlton",0.225784680775822,"MCG",-37.9401335802677
+1,"Hawthorn","Essendon","Hawthorn",0.658966656880877,"MCG",23.9453174185942
+1,"Geelong","Fremantle","Geelong",0.683856078828299,"GMHBA Stadium",27.3007804774333
+1,"Sydney","Brisbane Lions","Brisbane Lions",0.496655385756439,"SCG",-0.525361109557984
+1,"Footscray","North Melbourne","Footscray",0.778384941789238,"Marvel Stadium",38.3634570860872
+1,"Collingwood","Port Adelaide","Port Adelaide",0.432992989895867,"MCG",-10.4478713591815
+1,"Adelaide","St Kilda","St Kilda",0.480514776579963,"Adelaide Oval",-3.05882055054814
+1,"Melbourne","GWS","Melbourne",0.547769186010594,"MCG",7.47543275212282
+1,"West Coast","Gold Coast","Gold Coast",0.359389267127453,"Optus Stadium",-21.3757287421098
