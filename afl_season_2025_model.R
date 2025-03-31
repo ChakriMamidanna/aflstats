@@ -111,18 +111,18 @@ a25_clean_home <- a25 %>%
   mutate(Season = year(utcStartTime),
          Date = as.Date(utcStartTime)) %>%
   group_by(Season,  round.roundNumber, Date,  venue.name,  home.team.name, away.team.name,   team.name) %>%
-  summarise(hInside.50s      = sum(inside50s),
-            hMarks.Inside.50 = sum(marksInside50),
-            hTackles         = sum(tackles),
-            htr = sum(ratingPoints),
-            hTacklesi50         = sum(tacklesInside50),
-            hinterceptMarks         = sum(extendedStats.interceptMarks),
-            hOne.Percenters  = sum(onePercenters),
-            hcontestedPossessions = sum(contestedPossessions),
-            hshotsAtGoal = sum(shotsAtGoal),
-            hclearances = sum(clearances.totalClearances),
-            hhitouts = sum(extendedStats.hitoutsToAdvantage),
-            hturnovers = sum(turnovers) ) %>%
+  summarise(hInside.50s      = sum(inside50s, na.rm = T),
+            hMarks.Inside.50 = sum(marksInside50, na.rm = T),
+            hTackles         = sum(tackles, na.rm = T),
+            htr = sum(ratingPoints, na.rm = T),
+            hTacklesi50         = sum(tacklesInside50, na.rm = T),
+            hinterceptMarks         = sum(extendedStats.interceptMarks, na.rm = T),
+            hOne.Percenters  = sum(onePercenters, na.rm = T),
+            hcontestedPossessions = sum(contestedPossessions, na.rm = T),
+            hshotsAtGoal = sum(shotsAtGoal, na.rm = T),
+            hclearances = sum(clearances.totalClearances, na.rm = T),
+            hhitouts = sum(extendedStats.hitoutsToAdvantage, na.rm = T),
+            hturnovers = sum(turnovers, na.rm = T) ) %>%
   filter(home.team.name == team.name) %>%
   select(Season,"Round"= round.roundNumber, Date,"Venue"= venue.name,"Home.team"= home.team.name,
          "Away.team"=  away.team.name, htr, hInside.50s, hMarks.Inside.50, hTackles,hTacklesi50,hinterceptMarks,
@@ -133,18 +133,18 @@ a25_clean_away <- a25 %>%
   mutate(Season = year(utcStartTime),
          Date = as.Date(utcStartTime)) %>%
   group_by(Season,  round.roundNumber, Date,  venue.name,  home.team.name, away.team.name,   team.name) %>%
-  summarise(aInside.50s      = sum(inside50s),
-            aMarks.Inside.50 = sum(marksInside50),
-            aTackles         = sum(tackles),
-            atr = sum(ratingPoints),
-            aTacklesi50         = sum(tacklesInside50),
-            ainterceptMarks         = sum(extendedStats.interceptMarks),
-            aOne.Percenters  = sum(onePercenters),
-            acontestedPossessions = sum(contestedPossessions),
-            ashotsAtGoal = sum(shotsAtGoal),
-            aclearances = sum(clearances.totalClearances),
-            ahitouts = sum(extendedStats.hitoutsToAdvantage),
-            aturnovers = sum(turnovers)  ) %>%
+  summarise(aInside.50s      = sum(inside50s, na.rm = T),
+            aMarks.Inside.50 = sum(marksInside50, na.rm = T),
+            aTackles         = sum(tackles, na.rm = T),
+            atr = sum(ratingPoints, na.rm = T),
+            aTacklesi50         = sum(tacklesInside50, na.rm = T),
+            ainterceptMarks         = sum(extendedStats.interceptMarks, na.rm = T),
+            aOne.Percenters  = sum(onePercenters, na.rm = T),
+            acontestedPossessions = sum(contestedPossessions, na.rm = T),
+            ashotsAtGoal = sum(shotsAtGoal, na.rm = T),
+            aclearances = sum(clearances.totalClearances, na.rm = T),
+            ahitouts = sum(extendedStats.hitoutsToAdvantage, na.rm = T),
+            aturnovers = sum(turnovers, na.rm = T)  ) %>%
   filter(away.team.name == team.name) %>%
   select(Season,"Round"= round.roundNumber, Date,"Venue"= venue.name,"Home.team"= home.team.name,
          "Away.team"=  away.team.name, atr, aInside.50s, aMarks.Inside.50, aTackles, aTacklesi50,ainterceptMarks,
@@ -170,13 +170,58 @@ stats25_sum <- a25_clean %>%
   ungroup() %>%
   select(-Round)
 
-
-results_25 <- fitzRoy::fetch_results_afltables(2025)%>%
-  mutate(Round.Number = ifelse(Round.Number < 10, paste0("0",Round.Number), Round.Number)) %>%
-  mutate(seas_rnd =as.numeric(paste0(Season, Round.Number)))
-
+# dput(names(results_25))
+# 
+results_25 <- fitzRoy::fetch_results(2025) %>%
+  mutate(    Margin = homeTeamScore.matchScore.totalScore-awayTeamScore.matchScore.totalScore)  %>% 
+  mutate(match.homeTeam.name = ifelse(tolower(match.homeTeam.name) == "western bulldogs", "Footscray",   match.homeTeam.name),
+         match.awayTeam.name = ifelse(tolower(match.awayTeam.name) == "western bulldogs", "Footscray",   match.awayTeam.name)) %>%
+  mutate(match.homeTeam.name = ifelse(tolower(match.homeTeam.name) == "gold coast suns", "Gold Coast",   match.homeTeam.name),
+         match.awayTeam.name = ifelse(tolower(match.awayTeam.name) == "gold coast suns", "Gold Coast",   match.awayTeam.name)) %>%
+  mutate(match.homeTeam.name = ifelse(tolower(match.homeTeam.name) == "west coast eagles", "West Coast", match.homeTeam.name),
+         match.awayTeam.name = ifelse(tolower(match.awayTeam.name) == "west coast eagles", "West Coast", match.awayTeam.name)) %>%
+  mutate(match.homeTeam.name = ifelse(tolower(match.homeTeam.name) == "sydney swans", "Sydney",          match.homeTeam.name),
+         match.awayTeam.name = ifelse(tolower(match.awayTeam.name) == "sydney swans", "Sydney",          match.awayTeam.name)) %>%
+  mutate(match.homeTeam.name = ifelse(tolower(match.homeTeam.name) == "adelaide crows", "Adelaide",      match.homeTeam.name),
+         match.awayTeam.name = ifelse(tolower(match.awayTeam.name) == "adelaide crows", "Adelaide",      match.awayTeam.name)) %>%
+  mutate(match.homeTeam.name = ifelse(tolower(match.homeTeam.name) == "geelong cats", "Geelong",         match.homeTeam.name),
+         match.awayTeam.name = ifelse(tolower(match.awayTeam.name) == "geelong cats", "Geelong",         match.awayTeam.name)) %>%
+  mutate(match.homeTeam.name = ifelse(tolower(match.homeTeam.name) == "gws giants", "GWS",               match.homeTeam.name),
+         match.awayTeam.name = ifelse(tolower(match.awayTeam.name) == "gws giants", "GWS",               match.awayTeam.name))%>% 
+  select(
+    Game = matchId,
+    Date = match.date,
+    Round = round.name,
+    Home.Team = match.homeTeam.name,
+    Home.Goals = homeTeamScore.matchScore.goals,
+    Home.Behinds = homeTeamScore.matchScore.behinds,
+    Home.Points = homeTeamScore.matchScore.totalScore,
+    Away.Team = match.awayTeam.name,
+    Away.Goals = awayTeamScore.matchScore.goals,
+    Away.Behinds = awayTeamScore.matchScore.behinds,
+    Away.Points = awayTeamScore.matchScore.totalScore,
+    Venue = venue.name,
+    Margin,
+    Season = round.year,
+    Round.Type = round.name,
+    Round.Number = round.roundNumber
+  ) %>%
+  mutate(
+    Season = as.numeric(Season),
+    # Ensure Round.Number has leading zeros
+    Round.Number = ifelse(Round.Number < 10, paste0("0", Round.Number), as.character(Round.Number)),
+    # Create seas_rnd column
+    seas_rnd = as.numeric(paste0(Season, Round.Number))
+  )
+  
+  
+# results_25 <- fitzRoy::fetch_results_afltables(2025) %>%
+#   mutate(Round.Number = ifelse(Round.Number < 10, paste0("0",Round.Number), Round.Number)) %>%
+#   mutate(seas_rnd =as.numeric(paste0(Season, Round.Number)))
+# # dput(names(results_25))
 result_25_withstats <- results_25 %>%
   select(-Venue) %>%
+  mutate(Date = as.Date(Date)) %>% 
   left_join(stats25_sum, by = c("Date",
                                 "Home.Team"= "Home.team",
                                 "Season",
@@ -352,7 +397,7 @@ model_training_data <- training_data %>%
 
 # Train the model
 lm_model <- lm(Margin ~ Home.OffensiveRating + Away.OffensiveRating + Home.DefensiveRating + Away.DefensiveRating + HomeGroundAdvantage, data = model_training_data)
-# summary(lm_model)
+summary(lm_model)
 # 
 # # Display model summary
 # # hn2 <- summary(lm_model)
@@ -402,7 +447,7 @@ current_team_ratings <- left_join(latest_home_ratings, latest_away_ratings, by =
   mutate(all_home =Home.OffensiveRating + Home.DefensiveRating, 
          all_away = Away.OffensiveRating + Away.DefensiveRating)
 
-rd = 3
+rd = 4
 fix_data <- fitzRoy::fetch_fixture(2025) %>% 
   filter(round.roundNumber == rd) %>% 
   select(compSeason.name, round.roundNumber, home.team.name, away.team.name, venue.name)%>%
@@ -448,8 +493,17 @@ pred_clean <- fix_data_pred %>%
          Winner,"HomeProbability"=pr, "VenueName"=venue.name,  "PredictedMargin")
 write.csv(pred_clean, paste0("predictions2025/chakri_round_",rd,".csv"), row.names = F)
 
+
+pred_bits_opti <- fix_data_pred %>% 
+  select("RoundNumber"=round.roundNumber, "HomeTeam" =home.team.name, "AwayTeam"=away.team.name, 
+         Winner,"HomeProbability"=pr, "VenueName"=venue.name,  "PredictedMargin") %>% 
+  mutate(HomeProbability = case_when(HomeProbability <= 0.46 & HomeProbability >= 0.23  ~ HomeProbability - 0.04,
+                                     HomeProbability >= 0.54 & HomeProbability <= 0.77  ~ HomeProbability + 0.04,
+                                     TRUE ~  HomeProbability))
+write.csv(pred_bits_opti, paste0("predictions2025/chakri_round_optibits",rd,".csv"), row.names = F)
+
 seas_preds <- read.csv(paste0("predictions2025/chakri_2025_allpreds.csv"))
-seas_preds <- rbind(seas_preds, pred_clean)
+seas_preds <- rbind(seas_preds, pred_bits_opti)
 write.csv(seas_preds, "predictions2025/chakri_2025_allpreds.csv", row.names = F)
 
 
