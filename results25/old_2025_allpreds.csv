@@ -52,12 +52,21 @@
 6,"Sydney","Port Adelaide","Sydney",0.502485407,"SCG",0.6246445
 6,"Footscray","St Kilda","Footscray",0.559266365,"Marvel Stadium",14.80934886
 6,"Geelong","Hawthorn","Geelong",0.509210449,"MCG",2.314515389
-7,"Melbourne","Richmond","Melbourne",0.566360424987249,"MCG",16.5576425624608
-7,"Collingwood","Essendon","Collingwood",0.570193783607334,"MCG",17.4989862782595
-7,"Fremantle","Adelaide","Fremantle",0.557171486163451,"Optus Stadium",14.2916311530165
-7,"St Kilda","Brisbane Lions","Brisbane Lions",0.45183990871054,"Marvel Stadium",-12.0578243367194
-7,"Port Adelaide","North Melbourne","Port Adelaide",0.711780092760117,"Adelaide Oval",49.3853001015885
-7,"GWS","Footscray","Footscray",0.49299081651626,"Manuka Oval",-1.76145758979319
-7,"Gold Coast","Sydney","Gold Coast",0.528089374562931,"People First Stadium",7.05047087641094
-7,"Carlton","Geelong","Geelong",0.472828376868119,"MCG",-6.82068330291106
-7,"Hawthorn","West Coast","Hawthorn",0.719732256294464,"Marvel Stadium",50.9420522834744
+7,"Melbourne","Richmond","Melbourne",0.566360425,"MCG",16.55764256
+7,"Collingwood","Essendon","Collingwood",0.570193784,"MCG",17.49898628
+7,"Fremantle","Adelaide","Fremantle",0.557171486,"Optus Stadium",14.29163115
+7,"St Kilda","Brisbane Lions","Brisbane Lions",0.451839909,"Marvel Stadium",-12.05782434
+7,"Port Adelaide","North Melbourne","Port Adelaide",0.711780093,"Adelaide Oval",49.3853001
+7,"GWS","Footscray","Footscray",0.492990817,"Manuka Oval",-1.76145759
+7,"Gold Coast","Sydney","Gold Coast",0.528089375,"People First Stadium",7.050470876
+7,"Carlton","Geelong","Geelong",0.472828377,"MCG",-6.820683303
+7,"Hawthorn","West Coast","Hawthorn",0.719732256,"Marvel Stadium",50.94205228
+8,"Essendon","North Melbourne","Essendon",0.766467210016072,"Marvel Stadium",28.6226309561592
+8,"St Kilda","Fremantle","Fremantle",0.30695641522049,"Marvel Stadium",-10.7850933108197
+8,"Footscray","Port Adelaide","Footscray",0.708178000981959,"Mars Stadium",14.5404547434295
+8,"Adelaide","Carlton","Adelaide",0.529165898539808,"Adelaide Oval",7.3199372515796
+8,"Collingwood","Geelong","Collingwood",0.501815775675063,"MCG",0.456351726713139
+8,"West Coast","Melbourne","Melbourne",0.25582166739358,"Optus Stadium",-23.3257694021895
+8,"Sydney","GWS","Sydney",0.500253285752827,"SCG",0.0636576461096082
+8,"Hawthorn","Richmond","Hawthorn",0.791685939353092,"MCG",34.4452595829809
+8,"Brisbane Lions","Gold Coast","Brisbane Lions",0.724089009454171,"Gabba",18.4529221288442
