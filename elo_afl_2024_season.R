@@ -163,11 +163,48 @@ add_2024_stats_clean <- left_join(add_2024_stats_clean_home, add_2024_stats_clea
   select(-Round)
 
 
-results_24 <- fitzRoy::fetch_results_afltables(2025) %>%
-  mutate(Round.Number =ifelse(is.na(Round.Number), sub('.', '', Round) ,Round.Number),
-         Round.Number = as.integer(Round.Number),
-         Round.Number = ifelse(Round.Number < 10, paste0("0",Round.Number), Round.Number)) %>%
-  mutate(seas_rnd =as.numeric(paste0(Season, Round.Number)))
+results_24 <- fitzRoy::fetch_results(2025) %>%
+  mutate(    Margin = homeTeamScore.matchScore.totalScore-awayTeamScore.matchScore.totalScore)  %>% 
+  mutate(match.homeTeam.name = ifelse(tolower(match.homeTeam.name) == "western bulldogs", "Footscray",   match.homeTeam.name),
+         match.awayTeam.name = ifelse(tolower(match.awayTeam.name) == "western bulldogs", "Footscray",   match.awayTeam.name)) %>%
+  mutate(match.homeTeam.name = ifelse(tolower(match.homeTeam.name) == "gold coast suns", "Gold Coast",   match.homeTeam.name),
+         match.awayTeam.name = ifelse(tolower(match.awayTeam.name) == "gold coast suns", "Gold Coast",   match.awayTeam.name)) %>%
+  mutate(match.homeTeam.name = ifelse(tolower(match.homeTeam.name) == "west coast eagles", "West Coast", match.homeTeam.name),
+         match.awayTeam.name = ifelse(tolower(match.awayTeam.name) == "west coast eagles", "West Coast", match.awayTeam.name)) %>%
+  mutate(match.homeTeam.name = ifelse(tolower(match.homeTeam.name) == "sydney swans", "Sydney",          match.homeTeam.name),
+         match.awayTeam.name = ifelse(tolower(match.awayTeam.name) == "sydney swans", "Sydney",          match.awayTeam.name)) %>%
+  mutate(match.homeTeam.name = ifelse(tolower(match.homeTeam.name) == "adelaide crows", "Adelaide",      match.homeTeam.name),
+         match.awayTeam.name = ifelse(tolower(match.awayTeam.name) == "adelaide crows", "Adelaide",      match.awayTeam.name)) %>%
+  mutate(match.homeTeam.name = ifelse(tolower(match.homeTeam.name) == "geelong cats", "Geelong",         match.homeTeam.name),
+         match.awayTeam.name = ifelse(tolower(match.awayTeam.name) == "geelong cats", "Geelong",         match.awayTeam.name)) %>%
+  mutate(match.homeTeam.name = ifelse(tolower(match.homeTeam.name) == "gws giants", "GWS",               match.homeTeam.name),
+         match.awayTeam.name = ifelse(tolower(match.awayTeam.name) == "gws giants", "GWS",               match.awayTeam.name))%>% 
+  select(
+    Game = matchId,
+    Date = match.date,
+    Round = round.name,
+    Home.Team = match.homeTeam.name,
+    Home.Goals = homeTeamScore.matchScore.goals,
+    Home.Behinds = homeTeamScore.matchScore.behinds,
+    Home.Points = homeTeamScore.matchScore.totalScore,
+    Away.Team = match.awayTeam.name,
+    Away.Goals = awayTeamScore.matchScore.goals,
+    Away.Behinds = awayTeamScore.matchScore.behinds,
+    Away.Points = awayTeamScore.matchScore.totalScore,
+    Venue = venue.name,
+    Margin,
+    Season = round.year,
+    Round.Type = round.name,
+    Round.Number = round.roundNumber
+  ) %>%
+  mutate(
+    Date = as.Date(Date),
+    Season = as.numeric(Season),
+    # Ensure Round.Number has leading zeros
+    Round.Number = ifelse(Round.Number < 10, paste0("0", Round.Number), as.character(Round.Number)),
+    # Create seas_rnd column
+    seas_rnd = as.numeric(paste0(Season, Round.Number))
+  )
 
 result_24_withstats <- results_24 %>%
   select(-Venue) %>%
@@ -374,18 +411,25 @@ fixture_exp_pred_lm <- fix_24clean %>%
 #          actual_margin = abs(hscore - ascore)) 
 
 
-round <- 3
+round <- 9
 round_pred_2024 <- fixture_exp_pred_lm %>%
   filter(Round == round) %>%
   select( "RoundNumber"= "Round","HomeTeam"= "Home.team", "AwayTeam"="Away.team",
           "Winner"= winner_name, "HomeProbability"=elo_prob_home, 
-          "VenueName"=Venue, "PredictedMargin" =pred_margin)
+          "VenueName"=Venue, "PredictedMargin" =pred_margin) %>%
+  mutate(HomeProbability = case_when(HomeProbability <= 0.46 & HomeProbability >= 0.23  ~ HomeProbability - 0.15,
+                                     HomeProbability >= 0.54 & HomeProbability <= 0.77  ~ HomeProbability + 0.15,
+                                     TRUE ~  HomeProbability))
+
 write.csv(round_pred_2024, paste0("results25/round",round,"_2024.csv"), row.names = F)
           
 seas_preds <- read.csv(paste0("results25/old_2025_allpreds.csv"))
 seas_preds <- rbind(seas_preds, round_pred_2024)
 write.csv(seas_preds, "results25/old_2025_allpreds.csv", row.names = F)
 
+seas_preds <- read.csv(paste0("predictions2025/chakri_2025_allpreds.csv"))
+seas_preds <- rbind(seas_preds, round_pred_2024)
+write.csv(seas_preds, "predictions2025/chakri_2025_allpreds.csv", row.names = F)
 
 # gm_auth_configure(path = "gmailsec.json")
 # 
@@ -434,12 +478,12 @@ s25_res <- fitzRoy::fetch_results_squiggle(2025) %>%
          "Margin")
 
 old_preds <- read.csv(paste0("results25/old_2025_allpreds.csv")) %>% 
-  mutate(type = "old") 
+  mutate(type = "old")  
 # %>% 
 #   right_join(s25_res, by = c("RoundNumber", "HomeTeam", "AwayTeam")) %>% 
 #   mutate(marg_diff = Margin - PredictedMargin) 
 
-new_preds <- read.csv(paste0("predictions2025/chakri_2025_allpreds.csv")) %>% 
+new_preds <- read.csv(paste0("predictions2025/chakri_2025_allpredsorig.csv")) %>% 
   mutate(type = "new") #%>%
   # mutate(HomeProbability = case_when(HomeProbability <= 0.46 & HomeProbability >= 0.23  ~ HomeProbability - 0.04,
   #                                    HomeProbability >= 0.54 & HomeProbability <= 0.77  ~ HomeProbability + 0.04,
@@ -449,7 +493,7 @@ new_preds <- read.csv(paste0("predictions2025/chakri_2025_allpreds.csv")) %>%
 
 
 testing_preds <- rbind(old_preds, new_preds)%>% 
-  mutate(PredictedMargin = round(PredictedMargin)) %>% 
+  mutate(PredictedMargin = round(PredictedMargin, 6)) %>% 
   right_join(s25_res, by = c("RoundNumber", "HomeTeam", "AwayTeam")) %>% 
   # filter(RoundNumber < 3) %>% 
   mutate(marg_diff = abs(Margin - PredictedMargin), 
@@ -459,10 +503,13 @@ testing_preds <- rbind(old_preds, new_preds)%>%
                                             TRUE ~ 0), 
          bits =ifelse(Margin > 0, 1 + log2(HomeProbability), 
                       1 + log2(1-HomeProbability))) %>%
+  # filter(RoundNumber <= 3)
  group_by(type) %>% 
-  mutate(mae = mean(marg_diff), #summarise
+  summarise(mae = mean(marg_diff), #summarise
             corr_pick = sum(corrpic), 
             totbits = sum(bits))
+# %>% 
+  # arrange( RoundNumber, type)
 
 
-# testing_preds
+testing_preds

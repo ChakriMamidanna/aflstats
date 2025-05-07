@@ -447,7 +447,7 @@ current_team_ratings <- left_join(latest_home_ratings, latest_away_ratings, by =
   mutate(all_home =Home.OffensiveRating + Home.DefensiveRating, 
          all_away = Away.OffensiveRating + Away.DefensiveRating)
 
-rd = 4
+rd = 9
 fix_data <- fitzRoy::fetch_fixture(2025) %>% 
   filter(round.roundNumber == rd) %>% 
   select(compSeason.name, round.roundNumber, home.team.name, away.team.name, venue.name)%>%
@@ -497,23 +497,23 @@ write.csv(pred_clean, paste0("predictions2025/chakri_round_",rd,".csv"), row.nam
 pred_bits_opti <- fix_data_pred %>% 
   select("RoundNumber"=round.roundNumber, "HomeTeam" =home.team.name, "AwayTeam"=away.team.name, 
          Winner,"HomeProbability"=pr, "VenueName"=venue.name,  "PredictedMargin") %>% 
-  mutate(HomeProbability = case_when(HomeProbability <= 0.46 & HomeProbability >= 0.23  ~ HomeProbability - 0.04,
-                                     HomeProbability >= 0.54 & HomeProbability <= 0.77  ~ HomeProbability + 0.04,
+  mutate(HomeProbability = case_when(HomeProbability <= 0.44 & HomeProbability >= 0.23  ~ HomeProbability - 0.06,
+                                     HomeProbability >= 0.56 & HomeProbability <= 0.77  ~ HomeProbability + 0.06,
                                      TRUE ~  HomeProbability))
 write.csv(pred_bits_opti, paste0("predictions2025/chakri_round_optibits",rd,".csv"), row.names = F)
 
-seas_preds <- read.csv(paste0("predictions2025/chakri_2025_allpreds.csv"))
+seas_preds <- read.csv(paste0("predictions2025/chakri_2025_allpredsorig.csv"))
 seas_preds <- rbind(seas_preds, pred_bits_opti)
-write.csv(seas_preds, "predictions2025/chakri_2025_allpreds.csv", row.names = F)
+write.csv(seas_preds, "predictions2025/chakri_2025_allpredsorig.csv", row.names = F)
 
-
-gm_auth_configure(path = "gmailsec.json")
-
-my_email <- gm_mime() %>% 
-  gm_to("chakri.mamidanna@reece.com.au") %>% 
-  gm_from("chakrimamidanna@gmail.com") %>% 
-  gm_subject(paste0("Round ", rd)) %>% 
-  gm_text_body(paste0("Chakri's round ", rd, " AFL tips")) %>% 
-  gm_attach_file(paste0("predictions2025/chakri_round_",rd,".csv"))
-
-gm_send_message(my_email)
+# 
+# gm_auth_configure(path = "gmailsec.json")
+# 
+# my_email <- gm_mime() %>% 
+#   gm_to("chakri.mamidanna@reece.com.au") %>% 
+#   gm_from("chakrimamidanna@gmail.com") %>% 
+#   gm_subject(paste0("Round ", rd)) %>% 
+#   gm_text_body(paste0("Chakri's round ", rd, " AFL tips")) %>% 
+#   gm_attach_file(paste0("predictions2025/chakri_round_",rd,".csv"))
+# 
+# gm_send_message(my_email)
