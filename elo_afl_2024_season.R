@@ -78,7 +78,7 @@ afl_player_stats <- c()
 # 
 # results_orig <- fitzRoy::fetch_results_afltables(2016:2024) %>%
 #   mutate(Round.Number = ifelse(Round.Number < 10, paste0("0",Round.Number), Round.Number)) %>%
-#   mutate(seas_rnd =as.numeric(paste0(Season, Round.Number))) %>% 
+#   mutate(seas_rnd =as.numeric(paste0(Season, Round.Number))) %>%
 #   filter(!is.na(seas_rnd))
 # 
 # result_orig_withstats <- results_orig %>%
@@ -89,10 +89,12 @@ afl_player_stats <- c()
 #                               "Away.Team"="Away.team"))  %>%
 #   # filter(Round.Type != "Finals")
 #   filter(Game != 14786)
-# 
+
 # # result_orig_withstats <- read.csv("result_withstats_15to23.csv")
 # # write.csv(result_orig_withstats, "result_withstats_15to23.csv", row.names = F)
 # saveRDS(result_orig_withstats, "result_withstats_15to24.rds")
+setwd("~/Desktop/aflstats")
+
 result_orig_withstats <- readRDS("result_withstats_15to24.rds")
 
 # dput(names(result_orig_withstats24))
@@ -411,7 +413,7 @@ fixture_exp_pred_lm <- fix_24clean %>%
 #          actual_margin = abs(hscore - ascore)) 
 
 
-round <- 9
+round <- 10
 round_pred_2024 <- fixture_exp_pred_lm %>%
   filter(Round == round) %>%
   select( "RoundNumber"= "Round","HomeTeam"= "Home.team", "AwayTeam"="Away.team",
