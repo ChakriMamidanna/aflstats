@@ -489,27 +489,53 @@ new_preds <- read.csv(paste0("predictions2025/chakri_2025_allpredsorig.csv")) %>
   #                                    HomeProbability >= 0.54 & HomeProbability <= 0.77  ~ HomeProbability + 0.04,
   #                                    TRUE ~  HomeProbability))
   
+curr_preds <-  read.csv(paste0("predictions2025/chakri_2025_allpreds.csv")) %>% 
+  mutate(type = "curr")
 
 
+rbind(old_preds, new_preds, curr_preds)%>% 
+  mutate(PredictedMargin = round(PredictedMargin, 6)) %>% 
+  right_join(s25_res, by = c("RoundNumber", "HomeTeam", "AwayTeam")) %>% 
+  # filter(RoundNumber < 3) %>% 
+  mutate(marg_diff = abs(Margin - PredictedMargin), 
+         corrpic = case_when(Margin < 0 & PredictedMargin < 0 ~ 1,
+                             Margin > 0 & PredictedMargin > 0 ~ 1,
+                             Margin == 0 ~ 1,
+                             TRUE ~ 0), 
+         bits =ifelse(Margin > 0, 1 + log2(HomeProbability), 
+                      1 + log2(1-HomeProbability)))%>%
+  # filter(RoundNumber <= 3)
+  group_by(type) %>% 
+  summarise(mae = mean(marg_diff), #summarise
+         corr_pick = sum(corrpic), 
+         totbits = sum(bits))
 
-testing_preds <- rbind(old_preds, new_preds)%>% 
+
+testing_preds <- rbind(old_preds, new_preds, curr_preds)%>% 
   mutate(PredictedMargin = round(PredictedMargin, 6)) %>% 
   right_join(s25_res, by = c("RoundNumber", "HomeTeam", "AwayTeam")) %>% 
   # filter(RoundNumber < 3) %>% 
   mutate(marg_diff = abs(Margin - PredictedMargin), 
          corrpic = case_when(Margin < 0 & PredictedMargin < 0 ~ 1,
                                             Margin > 0 & PredictedMargin > 0 ~ 1,
-                                            Margin == 0 & PredictedMargin == 0 ~ 1,
+                                            Margin == 0 ~ 1,
                                             TRUE ~ 0), 
          bits =ifelse(Margin > 0, 1 + log2(HomeProbability), 
-                      1 + log2(1-HomeProbability))) %>%
+                      1 + log2(1-HomeProbability)))%>%
   # filter(RoundNumber <= 3)
  group_by(type) %>% 
-  summarise(mae = mean(marg_diff), #summarise
+  mutate(mae = mean(marg_diff), #summarise
             corr_pick = sum(corrpic), 
-            totbits = sum(bits))
-# %>% 
-  # arrange( RoundNumber, type)
+            totbits = sum(bits)) %>%
+  # filter(RoundNumber <= 3)
+  group_by(type, RoundNumber) %>% 
+  mutate(round_mae = mean(marg_diff), #summarise
+         round_corr_pick = sum(corrpic), 
+         round_totbits = sum(bits))
 
-
-testing_preds
+# testing_preds
+# # %>% 
+#   # arrange( RoundNumber, type)
+# 
+# 
+# testing_preds
