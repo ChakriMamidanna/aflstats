@@ -447,7 +447,7 @@ current_team_ratings <- left_join(latest_home_ratings, latest_away_ratings, by =
   mutate(all_home =Home.OffensiveRating + Home.DefensiveRating, 
          all_away = Away.OffensiveRating + Away.DefensiveRating)
 
-rd = 9
+rd = 10
 fix_data <- fitzRoy::fetch_fixture(2025) %>% 
   filter(round.roundNumber == rd) %>% 
   select(compSeason.name, round.roundNumber, home.team.name, away.team.name, venue.name)%>%
