@@ -411,7 +411,7 @@ fixture_exp_pred_lm <- fix_24clean %>%
 #          actual_margin = abs(hscore - ascore)) 
 
 
-round <- 10
+round <- 11
 round_pred_2024 <- fixture_exp_pred_lm %>%
   filter(Round == round) %>%
   select( "RoundNumber"= "Round","HomeTeam"= "Home.team", "AwayTeam"="Away.team",
@@ -504,7 +504,9 @@ rbind(old_preds, new_preds, curr_preds)%>%
                              Margin == 0 ~ 1,
                              TRUE ~ 0), 
          bits =ifelse(Margin > 0, 1 + log2(HomeProbability), 
-                      1 + log2(1-HomeProbability)))%>%
+                      1 + log2(1-HomeProbability)), 
+         bits = ifelse(Margin == 0, 1 + 0.5*log2(HomeProbability*(1-HomeProbability)),
+                       bits))%>%
   # filter(RoundNumber <= 3)
   group_by(type) %>% 
   summarise(mae = mean(marg_diff), #summarise
@@ -522,7 +524,9 @@ testing_preds <- rbind(old_preds, new_preds, curr_preds)%>%
                              Margin == 0 ~ 1,
                              TRUE ~ 0), 
          bits =ifelse(Margin > 0, 1 + log2(HomeProbability), 
-                      1 + log2(1-HomeProbability)))%>%
+                      1 + log2(1-HomeProbability)), 
+         bits = ifelse(Margin == 0, 1 + 0.5*log2(HomeProbability*(1-HomeProbability)),
+                       bits))%>%
   # filter(RoundNumber <= 3)
   group_by(type) %>% 
   mutate(mae = mean(marg_diff), #summarise

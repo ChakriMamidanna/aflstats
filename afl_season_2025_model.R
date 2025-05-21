@@ -447,10 +447,10 @@ current_team_ratings <- left_join(latest_home_ratings, latest_away_ratings, by =
   mutate(all_home =Home.OffensiveRating + Home.DefensiveRating, 
          all_away = Away.OffensiveRating + Away.DefensiveRating)
 
-rd = 10
+rd = 11
 fix_data <- fitzRoy::fetch_fixture(2025) %>% 
   filter(round.roundNumber == rd) %>% 
-  select(compSeason.name, round.roundNumber, home.team.name, away.team.name, venue.name)%>%
+  select(compSeason.name, round.roundNumber, "home.team.name" =home.team.club.name, "away.team.name" =away.team.club.name, venue.name)%>%
   mutate(home.team.name = ifelse(tolower(home.team.name) == "western bulldogs", "Footscray", home.team.name),
          away.team.name = ifelse(tolower(away.team.name) == "western bulldogs", "Footscray", away.team.name)) %>%
   mutate(home.team.name = ifelse(tolower(home.team.name) == "gold coast suns", "Gold Coast", home.team.name),
