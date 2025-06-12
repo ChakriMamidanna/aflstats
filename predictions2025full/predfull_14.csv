@@ -1,0 +1,8 @@
+"compSeason.name","round.roundNumber","home.team.name","away.team.name","venue.name","Home.OffensiveRating","Home.DefensiveRating","Away.OffensiveRating","Away.DefensiveRating","GamesPlayed","GamesWon","HomeGroundAdvantage","PredictedMargin","pr","Winner"
+"2025 Toyota AFL Premiership",14,"St Kilda","Footscray","Marvel Stadium",1.47033747417674,-8.792240388773,-4.01683489650252,-2.26054985262558,11,7,0.636363636363636,-7.20995282695249,0.45393943841184,"Footscray"
+"2025 Toyota AFL Premiership",14,"Hawthorn","Adelaide","University of Tasmania Stadium",16.4773781373362,-12.8339982795433,-6.10240927739411,-5.94156574149651,1,1,1,18.6083387530595,0.621385056222995,"Hawthorn"
+"2025 Toyota AFL Premiership",14,"Brisbane Lions","GWS","Gabba",5.23044927059163,8.17275215225618,-0.28998970883033,-6.7797888900975,13,10,0.769230769230769,7.44521572524133,0.547574640711299,"Brisbane Lions"
+"2025 Toyota AFL Premiership",14,"Essendon","Geelong","MCG",0.100984871987926,2.5172514384662,-1.38959595455364,-6.50183317815079,4,2,0.5,-3.97947097478674,0.474639078036792,"Geelong"
+"2025 Toyota AFL Premiership",14,"North Melbourne","Fremantle","Optus Stadium",1.32573630009355,6.66547406877194,-2.3490286553366,-13.6077958972002,NA,NA,0,-0.825964807004928,0.494741505544725,"Fremantle"
+"2025 Toyota AFL Premiership",14,"Port Adelaide","Melbourne","Adelaide Oval",15.4064262567687,9.47238435786205,-3.24260602657163,-7.04919485704021,13,8,0.615384615384615,18.8629722116046,0.623133496114303,"Port Adelaide"
+"2025 Toyota AFL Premiership",14,"West Coast","Carlton","Optus Stadium",3.55059187225892,-8.26897429314005,-6.5712013793265,-6.91067291786127,10,2,0.2,-4.99082782888578,0.468174405049613,"Carlton"
