@@ -411,7 +411,7 @@ fixture_exp_pred_lm <- fix_24clean %>%
 #          actual_margin = abs(hscore - ascore)) 
 
 
-round <- 15
+round <- 16
 round_pred_2024 <- fixture_exp_pred_lm %>%
   filter(Round == round) %>%
   select( "RoundNumber"= "Round","HomeTeam"= "Home.team", "AwayTeam"="Away.team",
