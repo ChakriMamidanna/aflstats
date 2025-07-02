@@ -2,6 +2,7 @@ library(fitzRoy)
 library(tidyverse)
 library(zoo)
 library(gmailr)
+rd = 17
 
 # Load AFL data using fitzRoy
 # data <- fitzRoy::fetch_results_afltables(2015, 2022)
@@ -447,7 +448,6 @@ current_team_ratings <- left_join(latest_home_ratings, latest_away_ratings, by =
   mutate(all_home =Home.OffensiveRating + Home.DefensiveRating, 
          all_away = Away.OffensiveRating + Away.DefensiveRating)
 
-rd = 16
 fix_data <- fitzRoy::fetch_fixture(2025) %>% 
   filter(round.roundNumber == rd) %>% 
   select(compSeason.name, round.roundNumber, "home.team.name" =home.team.club.name, "away.team.name" =away.team.club.name, venue.name)%>%
