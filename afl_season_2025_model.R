@@ -2,8 +2,8 @@ library(fitzRoy)
 library(tidyverse)
 library(zoo)
 library(gmailr)
-rd = 17
-
+rd = 18
+# pred_bits_opti
 # Load AFL data using fitzRoy
 # data <- fitzRoy::fetch_results_afltables(2015, 2022)
 # a <- c()
