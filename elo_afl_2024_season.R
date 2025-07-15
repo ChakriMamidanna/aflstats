@@ -7,7 +7,7 @@ options(scipen = 99)
 # install.packages("gmailr")
 library(gmailr)
 # 
-round <- 18
+round <- 19
 # round_pred_2024
 a <- c()
 afl_player_stats <- c()
@@ -432,32 +432,12 @@ seas_preds <- read.csv(paste0("predictions2025/chakri_2025_allpreds.csv"))
 seas_preds <- rbind(seas_preds, round_pred_2024)
 write.csv(seas_preds, "predictions2025/chakri_2025_allpreds.csv", row.names = F)
 
-# gm_auth_configure(path = "gmailsec.json")
-# 
-# my_email <- gm_mime() %>% 
-#   gm_to("chakri.mamidanna@reece.com.au") %>% 
-#   gm_from("chakrimamidanna@gmail.com") %>% 
-#   gm_subject(paste0("Round ", round)) %>% 
-#   gm_text_body(paste0("Chakri's round ", round, " AFL tips")) %>% 
-#   gm_attach_file(paste0("results/round",round,"_2024.csv"))
-# 
-# gm_send_message(my_email)
 
-# 
-# all_preds <- read.csv("round0_2024.csv")
-# 
-# for (i in 1:9) {
-#   temp_preds <- read.csv( paste0("round",i,"_2024.csv"))
-#   all_preds <- rbind(all_preds, temp_preds)
-# }
 
-# all_preds <- write.csv(all_preds, "season_predictions.csv", row.names = F)
-# h <- fitzRoy::fetch_results_afltables(2025) %>%
-#   select("RoundNumber"="Round.Number", "HomeTeam"="Home.Team", "AwayTeam"=  "Away.Team",
-#           "Margin") %>%
-#    mutate(RoundNumber = RoundNumber -1)
-# 
-# s25_res <- fitzRoy::fetch_results_squiggle(2025) %>% 
+##############################################################################################
+########## ########## ########## Measuring results ########## ########## ########## ##########
+##############################################################################################
+# s25_res <- fitzRoy::fetch_results_squiggle(2025) %>%
 #   mutate(Margin = hscore-ascore) %>%
 #   mutate(hteam = ifelse(hteam == "Western Bulldogs", "Footscray", hteam),
 #          ateam = ifelse(ateam == "Western Bulldogs", "Footscray", ateam)) %>%
@@ -472,69 +452,70 @@ write.csv(seas_preds, "predictions2025/chakri_2025_allpreds.csv", row.names = F)
 #   mutate(hteam = ifelse(hteam == "Adelaide Crows", "Adelaide", hteam),
 #          ateam = ifelse(ateam == "Adelaide Crows", "Adelaide", ateam)) %>%
 #   mutate(hteam = ifelse(hteam == "Geelong Cats", "Geelong", hteam),
-#          ateam = ifelse(ateam == "Geelong Cats", "Geelong", ateam)) %>%  
+#          ateam = ifelse(ateam == "Geelong Cats", "Geelong", ateam)) %>%
 #   mutate(hteam = ifelse(hteam == "Greater Western Sydney", "GWS", hteam),
 #          ateam = ifelse(ateam == "Greater Western Sydney", "GWS", ateam)) %>%
 #   select("RoundNumber"="round", "HomeTeam"="hteam", "AwayTeam"=  "ateam",
 #          "Margin")
 # 
-# old_preds <- read.csv(paste0("results25/old_2025_allpreds.csv")) %>% 
-#   mutate(type = "old")  
-# # %>% 
-# #   right_join(s25_res, by = c("RoundNumber", "HomeTeam", "AwayTeam")) %>% 
-# #   mutate(marg_diff = Margin - PredictedMargin) 
+# old_preds <- read.csv(paste0("results25/old_2025_allpreds.csv")) %>%
+#   mutate(type = "model2024")
+# # %>%
+# #   right_join(s25_res, by = c("RoundNumber", "HomeTeam", "AwayTeam")) %>%
+# #   mutate(marg_diff = Margin - PredictedMargin)
 # 
-# new_preds <- read.csv(paste0("predictions2025/chakri_2025_allpredsorig.csv")) %>% 
-#   mutate(type = "new") #%>%
+# new_preds <- read.csv(paste0("predictions2025/chakri_2025_allpredsorig.csv")) %>%
+#   mutate(type = "model2025") #%>%
 #   # mutate(HomeProbability = case_when(HomeProbability <= 0.46 & HomeProbability >= 0.23  ~ HomeProbability - 0.04,
 #   #                                    HomeProbability >= 0.54 & HomeProbability <= 0.77  ~ HomeProbability + 0.04,
 #   #                                    TRUE ~  HomeProbability))
-#   
-# 
-# curr_preds <-  read.csv(paste0("predictions2025/chakri_2025_allpreds.csv")) %>% 
-#   mutate(type = "curr")
 # 
 # 
-# rbind(old_preds, new_preds, curr_preds)%>% 
-#   mutate(PredictedMargin = round(PredictedMargin, 6)) %>% 
-#   right_join(s25_res, by = c("RoundNumber", "HomeTeam", "AwayTeam")) %>% 
-#   # filter(RoundNumber < 3) %>% 
-#   mutate(marg_diff = abs(Margin - PredictedMargin), 
+# curr_preds <-  read.csv(paste0("predictions2025/chakri_2025_allpreds.csv")) %>%
+#   mutate(type = "current")
+# 
+# 
+# rbind(old_preds, new_preds, curr_preds)%>%
+#   mutate(PredictedMargin = round(PredictedMargin, 6)) %>%
+#   right_join(s25_res, by = c("RoundNumber", "HomeTeam", "AwayTeam")) %>%
+#   # filter(RoundNumber < 3) %>%
+#   mutate(marg_diff = abs(Margin - PredictedMargin),
 #          corrpic = case_when(Margin < 0 & PredictedMargin < 0 ~ 1,
 #                              Margin > 0 & PredictedMargin > 0 ~ 1,
 #                              Margin == 0 ~ 1,
-#                              TRUE ~ 0), 
-#          bits =ifelse(Margin > 0, 1 + log2(HomeProbability), 
-#                       1 + log2(1-HomeProbability)), 
+#                              TRUE ~ 0),
+#          bits =ifelse(Margin > 0, 1 + log2(HomeProbability),
+#                       1 + log2(1-HomeProbability)),
 #          bits = ifelse(Margin == 0, 1 + 0.5*log2(HomeProbability*(1-HomeProbability)),
-#                        bits))%>%
+#                        bits), 
+#          r7 = ifelse(RoundNumber <= 7, 'r7', 'postr7'))%>%
 #   # filter(RoundNumber <= 3)
-#   group_by(type) %>% 
-#   summarise(mae = mean(marg_diff), #summarise
-#             corr_pick = sum(corrpic), 
+#   group_by(type) %>%
+#   summarise(corr_pick = sum(corrpic),
+#             mae = mean(marg_diff), #summarise
 #             totbits = sum(bits))
 # 
 # 
-# testing_preds <- rbind(old_preds, new_preds, curr_preds)%>% 
-#   mutate(PredictedMargin = round(PredictedMargin, 6)) %>% 
-#   right_join(s25_res, by = c("RoundNumber", "HomeTeam", "AwayTeam")) %>% 
-#   # filter(RoundNumber < 3) %>% 
-#   mutate(marg_diff = abs(Margin - PredictedMargin), 
+# testing_preds <- rbind(old_preds, new_preds, curr_preds)%>%
+#   mutate(PredictedMargin = round(PredictedMargin, 6)) %>%
+#   right_join(s25_res, by = c("RoundNumber", "HomeTeam", "AwayTeam")) %>%
+#   # filter(RoundNumber < 3) %>%
+#   mutate(marg_diff = abs(Margin - PredictedMargin),
 #          corrpic = case_when(Margin < 0 & PredictedMargin < 0 ~ 1,
 #                              Margin > 0 & PredictedMargin > 0 ~ 1,
 #                              Margin == 0 ~ 1,
-#                              TRUE ~ 0), 
-#          bits =ifelse(Margin > 0, 1 + log2(HomeProbability), 
-#                       1 + log2(1-HomeProbability)), 
+#                              TRUE ~ 0),
+#          bits =ifelse(Margin > 0, 1 + log2(HomeProbability),
+#                       1 + log2(1-HomeProbability)),
 #          bits = ifelse(Margin == 0, 1 + 0.5*log2(HomeProbability*(1-HomeProbability)),
 #                        bits))%>%
 #   # filter(RoundNumber <= 3)
-#   group_by(type) %>% 
+#   group_by(type) %>%
 #   mutate(mae = mean(marg_diff), #summarise
-#          corr_pick = sum(corrpic), 
+#          corr_pick = sum(corrpic),
 #          totbits = sum(bits)) %>%
 #   # filter(RoundNumber <= 3)
-#   group_by(type, RoundNumber) %>% 
+#   group_by(type, RoundNumber) %>%
 #   mutate(round_mae = mean(marg_diff), #summarise
-#          round_corr_pick = sum(corrpic), 
+#          round_corr_pick = sum(corrpic),
 #          round_totbits = sum(bits))
