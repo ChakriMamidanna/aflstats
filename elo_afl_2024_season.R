@@ -7,7 +7,7 @@ options(scipen = 99)
 # install.packages("gmailr")
 library(gmailr)
 # 
-round <- 22
+round <- 23
 # round_pred_2024
 a <- c()
 afl_player_stats <- c()
