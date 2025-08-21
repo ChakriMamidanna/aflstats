@@ -8,6 +8,7 @@ options(scipen = 99)
 library(gmailr)
 # 
 round <- 24
+
 # round_pred_2024
 a <- c()
 afl_player_stats <- c()

@@ -2,6 +2,7 @@ library(fitzRoy)
 library(tidyverse)
 library(zoo)
 library(gmailr)
+
 rd = 24
 # pred_bits_opti
 # Load AFL data using fitzRoy
