@@ -1,0 +1,5 @@
+"compSeason.name","round.roundNumber","home.team.name","away.team.name","venue.name","Home.OffensiveRating","Home.DefensiveRating","Away.OffensiveRating","Away.DefensiveRating","GamesPlayed","GamesWon","HomeGroundAdvantage","PredictedMargin","pr","Winner"
+"2025 Toyota AFL Premiership",25,"Adelaide","Collingwood","Adelaide Oval",8.39374528402726,12.9092807403874,-5.82127023906337,-8.36188881798758,12,11,0.916666666666667,21.1927497314554,0.639323387808693,"Adelaide"
+"2025 Toyota AFL Premiership",25,"Geelong","Brisbane Lions","MCG",29.4841047384492,-3.75393906352922,-0.293246906513549,-7.30862089586295,2,1,0.5,26.0933977079638,0.674764632099365,"Geelong"
+"2025 Toyota AFL Premiership",25,"GWS","Hawthorn","ENGIE Stadium",19.4150654456383,3.14580268212787,-5.79630582834127,-5.66900990287949,9,7,0.777777777777778,24.7716959596968,0.664990930719025,"GWS"
+"2025 Toyota AFL Premiership",25,"Fremantle","Gold Coast","Optus Stadium",6.57465736932528,2.34977858070831,-2.64790052223426,-11.4008244797579,11,8,0.727272727272727,13.1547267463592,0.584743113574327,"Fremantle"
