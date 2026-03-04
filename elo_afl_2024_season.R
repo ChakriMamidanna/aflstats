@@ -5,15 +5,15 @@ library(lubridate)
 library(scales)
 options(scipen = 99)
 # install.packages("gmailr")
-library(gmailr)
+# library(gmailr)
 # 
 round <- 28
 
 # round_pred_2024
 a <- c()
 afl_player_stats <- c()
-
-# for(year in 2016:2024){
+# 
+# for(year in 2016:2025){
 # a <- fitzRoy::fetch_player_stats_afl(year)
 # a_clean_home <- a %>%
 #   filter(status == "CONCLUDED") %>%
@@ -79,9 +79,9 @@ afl_player_stats <- c()
 #   select(-Round)
 # 
 # 
-# results_orig <- fitzRoy::fetch_results_afltables(2016:2024) %>%
+# results_orig <- fitzRoy::fetch_results_afltables(2016:2025) %>%
 #   mutate(Round.Number = ifelse(Round.Number < 10, paste0("0",Round.Number), Round.Number)) %>%
-#   mutate(seas_rnd =as.numeric(paste0(Season, Round.Number))) %>% 
+#   mutate(seas_rnd =as.numeric(paste0(Season, Round.Number))) %>%
 #   filter(!is.na(seas_rnd))
 # 
 # result_orig_withstats <- results_orig %>%
@@ -92,14 +92,14 @@ afl_player_stats <- c()
 #                               "Away.Team"="Away.team"))  %>%
 #   # filter(Round.Type != "Finals")
 #   filter(Game != 14786)
-# 
-# # result_orig_withstats <- read.csv("result_withstats_15to23.csv")
-# # write.csv(result_orig_withstats, "result_withstats_15to23.csv", row.names = F)
-# saveRDS(result_orig_withstats, "result_withstats_15to24.rds")
-result_orig_withstats <- readRDS("result_withstats_15to24.rds")
+# # 
+# # # result_orig_withstats <- read.csv("result_withstats_15to23.csv")
+# # # write.csv(result_orig_withstats, "result_withstats_15to23.csv", row.names = F)
+# saveRDS(result_orig_withstats, "result_withstats_16to25.rds")
+result_orig_withstats <- readRDS("result_withstats_16to25.rds")
 
 # dput(names(result_orig_withstats24))
-add_2024_stats <- fitzRoy::fetch_player_stats_afl(2025) #%>% 
+add_2024_stats <- fitzRoy::fetch_player_stats_afl(2026) #%>% 
   # filter(round.roundNumber == 0)
 
 add_2024_stats_clean_home <- add_2024_stats %>%
@@ -166,7 +166,7 @@ add_2024_stats_clean <- left_join(add_2024_stats_clean_home, add_2024_stats_clea
   select(-Round)
 
 
-results_24 <- fitzRoy::fetch_results(2025) %>%
+results_24 <- fitzRoy::fetch_results(2026) %>%
   mutate(    Margin = homeTeamScore.matchScore.totalScore-awayTeamScore.matchScore.totalScore)  %>% 
   mutate(match.homeTeam.name = ifelse(tolower(match.homeTeam.name) == "western bulldogs", "Footscray",   match.homeTeam.name),
          match.awayTeam.name = ifelse(tolower(match.awayTeam.name) == "western bulldogs", "Footscray",   match.awayTeam.name)) %>%
@@ -222,7 +222,7 @@ result_orig_withstats24 <- rbind(result_orig_withstats, result_24_withstats)
   # summarise(across(everything(), ~ sum(is.na(.x))))
 # fixture_footywire <- fitzRoy::fetch_fixture_footywire(2024)
 # fix_24 <- fitzRoy::fetch_fixture_squiggle(2024)
-f24 <- fitzRoy::fetch_fixture(2025)
+f24 <- fitzRoy::fetch_fixture(2026)
 
 
 
@@ -415,7 +415,7 @@ fixture_exp_pred_lm <- fix_24clean %>%
 
 
 round_pred_2024 <- fixture_exp_pred_lm %>%
-  filter(Round == round) %>%
+  filter(Round == 0) %>%
   select( "RoundNumber"= "Round","HomeTeam"= "Home.team", "AwayTeam"="Away.team",
           "Winner"= winner_name, "HomeProbability"=elo_prob_home, 
           "VenueName"=Venue, "PredictedMargin" =pred_margin) %>%
@@ -423,15 +423,11 @@ round_pred_2024 <- fixture_exp_pred_lm %>%
                                      HomeProbability >= 0.54 & HomeProbability <= 0.77  ~ HomeProbability + 0.15,
                                      TRUE ~  HomeProbability))
 
-write.csv(round_pred_2024, paste0("results25/round",round,"_2024.csv"), row.names = F)
-          
-seas_preds <- read.csv(paste0("results25/old_2025_allpreds.csv"))
-seas_preds <- rbind(seas_preds, round_pred_2024)
-write.csv(seas_preds, "results25/old_2025_allpreds.csv", row.names = F)
+write.csv(round_pred_2024, paste0("elo26/round",0,"_2026.csv"), row.names = F)
 
-seas_preds <- read.csv(paste0("predictions2025/chakri_2025_allpreds.csv"))
+seas_preds <- read.csv(paste0("elo26/chakri_2026_allpreds.csv"))
 seas_preds <- rbind(seas_preds, round_pred_2024)
-write.csv(seas_preds, "predictions2025/chakri_2025_allpreds.csv", row.names = F)
+write.csv(seas_preds, "elo26/chakri_2026_allpreds.csv", row.names = F)
 
 
 
@@ -459,7 +455,7 @@ write.csv(seas_preds, "predictions2025/chakri_2025_allpreds.csv", row.names = F)
 #   select("RoundNumber"="round", "HomeTeam"="hteam", "AwayTeam"=  "ateam",
 #          "Margin")
 # 
-# old_preds <- read.csv(paste0("results25/old_2025_allpreds.csv")) %>%
+# old_preds <- read.csv(paste0("elo26/old_2025_allpreds.csv")) %>%
 #   mutate(type = "model2024")
 # # %>%
 # #   right_join(s25_res, by = c("RoundNumber", "HomeTeam", "AwayTeam")) %>%
