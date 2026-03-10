@@ -3,11 +3,13 @@ library(tidyverse)
 library(elo)
 library(lubridate)
 library(scales)
+library(slider)
+
 options(scipen = 99)
 # install.packages("gmailr")
 # library(gmailr)
 # 
-round <- 28
+round <- 1
 
 # round_pred_2024
 a <- c()
@@ -101,6 +103,7 @@ result_orig_withstats <- readRDS("result_withstats_16to25.rds")
 # dput(names(result_orig_withstats24))
 add_2024_stats <- fitzRoy::fetch_player_stats_afl(2026) #%>% 
   # filter(round.roundNumber == 0)
+
 
 add_2024_stats_clean_home <- add_2024_stats %>%
   filter(status == "CONCLUDED") %>%
@@ -331,13 +334,11 @@ map_elo_to_score <- function(elo_perc, marg.max = marg_elo, marg.min = -marg_elo
 
 exp_score_lm_homefull <- result_orig_withstats24  %>% 
   mutate(home.scoring.shots = Home.Goals + Home.Behinds) %>% 
-  lm(Home.Points ~ hshotsAtGoal  + hMarks.Inside.50   +
-      hclearances, data = .)
+  lm(Home.Points ~ hshotsAtGoal  + hMarks.Inside.50 + hclearances + hMarks.Inside.50 + hturnovers, data = .)
 
 exp_score_lm_awayfull <- result_orig_withstats24  %>% 
   mutate(away.scoring.shots = Away.Goals + Away.Behinds) %>% 
-  lm(Away.Points ~  ashotsAtGoal  + aMarks.Inside.50   +
-      aclearances , data = .)
+  lm(Away.Points ~  ashotsAtGoal  + aMarks.Inside.50  + aclearances + aturnovers, data = .)
 
 results_withlmfull <- result_orig_withstats24 %>% 
   filter(!is.na(hhitouts)) %>% 
@@ -352,9 +353,9 @@ results_withlmfull <- result_orig_withstats24 %>%
 
 # Set parameters
 HGA <- 23# home ground advantage
-HGA_same_state <- 3# home ground advantage
-carryOver <- 0.13 # season carry over
-k_val <- 35# update weighting factor
+HGA_same_state <- 5# home ground advantage
+carryOver <- 0.43 # season carry over
+k_val <- 45# update weighting factor
 
 # map_margin_to_outcome(12)
 # Run ELO
@@ -363,9 +364,9 @@ elo.data_exp_lmfull <- elo.run(
   map_margin_to_outcome(exp_margin) ~ # real_margin # exp_margin
     adjust(Home.Team, HGA) +
     Away.Team +
-    regress(Season, 1500, carryOver) +
+    regress(Season, 1200, carryOver) +
     group(seas_rnd),
-  initial.elos = 1500,
+  initial.elos = 1200,
   k = k_val, 
   history = T,
   data = results_withlmfull
@@ -398,12 +399,51 @@ team_name <- results_withlmfull %>% distinct(Home.Team) %>% arrange(tolower( Hom
 current_elo_home <- data.frame(team_name, current_elo_vec) %>% rename("home_elo" = current_elo_vec)
 current_elo_away <- data.frame(team_name, current_elo_vec) %>% rename("away_elo" = current_elo_vec)
 
+hga_points <- 50
+aga_points <- 20
+# Compute cumulative games & wins BEFORE each match at (Home.Team, Venue)
+hga_by_row <- results_withlmfull %>%
+  group_by(Home.Team, Venue) %>%
+  mutate(
+    cg = lag(slide_int(!is.na(Margin), sum, .before = 7), default = 0L),                # games before this match
+    cw = lag(slide_int(Margin > 0, ~ sum(.x, na.rm = TRUE), .before = 7),
+             default = 0L)
+    # wins before this match
+  ) %>%
+  ungroup() %>%
+  select(Game, Home.Team, Venue, cg, cw) %>% 
+  mutate(HGA_perc = cw/cg) %>% 
+  arrange(desc(Game)) %>% 
+  ungroup() %>% 
+  distinct(Home.Team, Venue, .keep_all = T) %>% 
+  filter(cg > 0)%>% 
+  select(Home.Team, Venue, HGA_perc)
+
+
+aga_by_row <- results_withlmfull %>%
+  group_by(Away.Team, Venue) %>%
+  mutate(
+    cg = lag(slide_int(!is.na(Margin), sum, .before = 7), default = 0L),                # games before this match
+    cw = lag(slide_int(Margin < 0, ~ sum(.x, na.rm = TRUE), .before = 7),
+             default = 0L)
+    # wins before this match
+  ) %>%
+  ungroup() %>%
+  select(Game, Away.Team, Venue, cg, cw) %>% 
+  mutate(AGA_perc = cw/cg) %>% 
+  arrange(desc(Game)) %>% 
+  ungroup() %>% 
+  distinct(Away.Team, Venue, .keep_all = T) %>% 
+  filter(cg > 0) %>% 
+  select(Away.Team, Venue, AGA_perc)
 
 fixture_exp_pred_lm <- fix_24clean %>%
   arrange(Date) %>% 
   left_join(current_elo_home, by = c("Home.team" = "team_name")) %>% 
   left_join(current_elo_away, by = c("Away.team" = "team_name")) %>% 
-  mutate(elo_prob_home =ifelse(is_home_adv == 1 | Venue == "GMHBA Stadium",  elo.prob(home_elo+HGA, away_elo), elo.prob(home_elo+HGA_same_state, away_elo) ),
+  left_join(hga_by_row, by = c("Home.team"="Home.Team", "Venue"))%>% 
+  left_join(aga_by_row, by = c("Away.team"="Away.Team", "Venue"))%>% 
+  mutate(elo_prob_home =  elo.prob(home_elo+(HGA_perc*hga_points) - (AGA_perc*aga_points), away_elo) ,
          elo_prob_away = 1 - elo_prob_home, 
          pred_margin = map_elo_to_score(elo_prob_home), 
          winner_name = ifelse(elo_prob_home > 0.5, Home.team, Away.team), 
@@ -415,15 +455,16 @@ fixture_exp_pred_lm <- fix_24clean %>%
 
 
 round_pred_2024 <- fixture_exp_pred_lm %>%
-  filter(Round == 0) %>%
+  filter(Round == round) %>%
   select( "RoundNumber"= "Round","HomeTeam"= "Home.team", "AwayTeam"="Away.team",
           "Winner"= winner_name, "HomeProbability"=elo_prob_home, 
           "VenueName"=Venue, "PredictedMargin" =pred_margin) %>%
-  mutate(HomeProbability = case_when(HomeProbability <= 0.46 & HomeProbability >= 0.23  ~ HomeProbability - 0.15,
-                                     HomeProbability >= 0.54 & HomeProbability <= 0.77  ~ HomeProbability + 0.15,
-                                     TRUE ~  HomeProbability))
+  mutate(HomeProbability = case_when(HomeProbability <= 0.46 ~ HomeProbability - 0.19,
+                                     HomeProbability >= 0.54  ~ HomeProbability + 0.19,
+                                     TRUE ~  HomeProbability)) %>% 
+  mutate(HomeProbability = ifelse(HomeProbability > 1, 0.997, HomeProbability))
 
-write.csv(round_pred_2024, paste0("elo26/round",0,"_2026.csv"), row.names = F)
+write.csv(round_pred_2024, paste0("elo26/round",round,"_2026.csv"), row.names = F)
 
 seas_preds <- read.csv(paste0("elo26/chakri_2026_allpreds.csv"))
 seas_preds <- rbind(seas_preds, round_pred_2024)
