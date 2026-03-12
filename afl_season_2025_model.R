@@ -1,9 +1,9 @@
 library(fitzRoy)
 library(tidyverse)
 library(zoo)
-library(gmailr)
+# library(gmailr)
 
-rd = 0
+rd = 1
 # pred_bits_opti
 # Load AFL data using fitzRoy
 # data <- fitzRoy::fetch_results_afltables(2015, 2022)
@@ -108,6 +108,7 @@ afl_player_stats <- c()
 result_orig_withstats <- readRDS("result_withstats_18to25.rds")
 
 a25 <- fitzRoy::fetch_player_stats_afl(2026)
+
 a25_clean_home <- a25 %>%
   filter(status == "CONCLUDED") %>%
   mutate(Season = year(utcStartTime),
@@ -174,7 +175,7 @@ stats25_sum <- a25_clean %>%
 
 # dput(names(results_25))
 # 
-results_25 <- fitzRoy::fetch_results(2026) %>%
+results_25 <- fitzRoy::fetch_results_afl(2026)  %>%
   mutate(    Margin = homeTeamScore.matchScore.totalScore-awayTeamScore.matchScore.totalScore)  %>% 
   mutate(match.homeTeam.name = ifelse(tolower(match.homeTeam.name) == "western bulldogs", "Footscray",   match.homeTeam.name),
          match.awayTeam.name = ifelse(tolower(match.awayTeam.name) == "western bulldogs", "Footscray",   match.awayTeam.name)) %>%
@@ -504,7 +505,7 @@ pred_bits_opti <- fix_data_pred %>%
                                      TRUE ~  HomeProbability))
 write.csv(pred_bits_opti, paste0("lm26/chakri_round_optibits",rd,".csv"), row.names = F)
 
-seas_preds <- read.csv(paste0("predictions2025/chakri_2025_allpredsorig.csv"))
+seas_preds <- read.csv(paste0("lm26/chakri_2026_allpreds.csv"))
 seas_preds <- rbind(seas_preds, pred_bits_opti)
 write.csv(seas_preds, "lm26/chakri_2026_allpreds.csv", row.names = F)
 
