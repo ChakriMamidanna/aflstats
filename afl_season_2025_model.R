@@ -3,7 +3,7 @@ library(tidyverse)
 library(zoo)
 # library(gmailr)
 
-rd = 1
+rd = 2
 # pred_bits_opti
 # Load AFL data using fitzRoy
 # data <- fitzRoy::fetch_results_afltables(2015, 2022)
@@ -505,18 +505,9 @@ pred_bits_opti <- fix_data_pred %>%
                                      TRUE ~  HomeProbability))
 write.csv(pred_bits_opti, paste0("lm26/chakri_round_optibits",rd,".csv"), row.names = F)
 
-seas_preds <- read.csv(paste0("lm26/chakri_2026_allpreds.csv"))
-seas_preds <- rbind(seas_preds, pred_bits_opti)
-write.csv(seas_preds, "lm26/chakri_2026_allpreds.csv", row.names = F)
+seas_preds <- read.csv(paste0("elo26/chakri_2026_allpreds.csv"))
 
-# 
-# gm_auth_configure(path = "gmailsec.json")
-# 
-# my_email <- gm_mime() %>% 
-#   gm_to("chakri.mamidanna@reece.com.au") %>% 
-#   gm_from("chakrimamidanna@gmail.com") %>% 
-#   gm_subject(paste0("Round ", rd)) %>% 
-#   gm_text_body(paste0("Chakri's round ", rd, " AFL tips")) %>% 
-#   gm_attach_file(paste0("predictions2025/chakri_round_",rd,".csv"))
-# 
-# gm_send_message(my_email)
+seas_preds <- rbind(seas_preds, pred_bits_opti)
+write.csv(seas_preds, "elo26/chakri_2026_allpreds.csv", row.names = F)
+
+
