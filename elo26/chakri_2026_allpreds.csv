@@ -1,22 +1,29 @@
 "RoundNumber","HomeTeam","AwayTeam","Winner","HomeProbability","VenueName","PredictedMargin"
-0,"Sydney","Carlton","Sydney",0.695298296440304,"SCG",11.3463157398692
-0,"Gold Coast","Geelong","Geelong",0.46060032082779,"People First Stadium",-9.87695357283492
-0,"GWS","Hawthorn","Hawthorn",0.471120977081163,"ENGIE Stadium",-7.24813702861607
-0,"Brisbane Lions","Footscray","Brisbane Lions",0.53778810170775,"Gabba",9.47489389384019
-0,"St Kilda","Collingwood","Collingwood",0.274612562640954,"MCG",-18.770298438844
-1,"Carlton","Richmond","Carlton",0.820609251687224,"MCG",31.9123010699058
-1,"Essendon","Hawthorn","Hawthorn",0.167004667207734,"MCG",-34.7419873339724
-1,"Footscray","GWS","Footscray",0.77793147114207,"Marvel Stadium",21.8195851592016
-1,"Geelong","Fremantle","Geelong",0.762997605813493,"GMHBA Stadium",18.1859112811765
-1,"Sydney","Brisbane Lions","Brisbane Lions",0.486176022133682,"SCG",-3.47325252468799
-1,"Collingwood","Adelaide","Collingwood",0.730232078977894,"MCG",10.0845238917801
-1,"North Melbourne","Port Adelaide","Port Adelaide",0.267335654425855,"Marvel Stadium",-10.6906425878043
-1,"Melbourne","St Kilda","Melbourne",0.749819661368986,"MCG",14.9459815353319
-1,"Gold Coast","West Coast","Gold Coast",0.916497231868379,"People First Stadium",52.2414053334016
-2,"Hawthorn","Sydney","Hawthorn",0.78468413504735,"MCG",23.4473383227909
-2,"Adelaide","Footscray","Adelaide",0.51528204801811,"Adelaide Oval",3.83932227387015
-2,"Richmond","Gold Coast","Gold Coast",0.230836753936109,"MCG",-19.6914302018558
-2,"GWS","St Kilda","GWS",0.739638199572503,"ENGIE Stadium",12.4249382769614
-2,"Fremantle","Melbourne","Fremantle",0.741386529225535,"Optus Stadium",12.8588199116481
-2,"Port Adelaide","Essendon","Port Adelaide",0.770996972896187,"Adelaide Oval",20.1377875981793
-2,"West Coast","North Melbourne","North Melbourne",0.269275926108941,"Optus Stadium",-10.2071772418577
+0,"Sydney","Carlton","Sydney",0.695298296,"SCG",11.34631574
+0,"Gold Coast","Geelong","Geelong",0.460600321,"People First Stadium",-9.876953573
+0,"GWS","Hawthorn","Hawthorn",0.471120977,"ENGIE Stadium",-7.248137029
+0,"Brisbane Lions","Footscray","Brisbane Lions",0.537788102,"Gabba",9.474893894
+0,"St Kilda","Collingwood","Collingwood",0.274612563,"MCG",-18.77029844
+1,"Carlton","Richmond","Carlton",0.820609252,"MCG",31.91230107
+1,"Essendon","Hawthorn","Hawthorn",0.167004667,"MCG",-34.74198733
+1,"Footscray","GWS","Footscray",0.777931471,"Marvel Stadium",21.81958516
+1,"Geelong","Fremantle","Geelong",0.762997606,"GMHBA Stadium",18.18591128
+1,"Sydney","Brisbane Lions","Brisbane Lions",0.486176022,"SCG",-3.473252525
+1,"Collingwood","Adelaide","Collingwood",0.730232079,"MCG",10.08452389
+1,"North Melbourne","Port Adelaide","Port Adelaide",0.267335654,"Marvel Stadium",-10.69064259
+1,"Melbourne","St Kilda","Melbourne",0.749819661,"MCG",14.94598154
+1,"Gold Coast","West Coast","Gold Coast",0.916497232,"People First Stadium",52.24140533
+2,"Hawthorn","Sydney","Hawthorn",0.784684135,"MCG",23.44733832
+2,"Adelaide","Footscray","Adelaide",0.515282048,"Adelaide Oval",3.839322274
+2,"Richmond","Gold Coast","Gold Coast",0.230836754,"MCG",-19.6914302
+2,"GWS","St Kilda","GWS",0.7396382,"ENGIE Stadium",12.42493828
+2,"Fremantle","Melbourne","Fremantle",0.741386529,"Optus Stadium",12.85881991
+2,"Port Adelaide","Essendon","Port Adelaide",0.770996973,"Adelaide Oval",20.1377876
+2,"West Coast","North Melbourne","North Melbourne",0.269275926,"Optus Stadium",-10.20717724
+3,"Geelong","Adelaide","Geelong",0.628193908767189,"GMHBA Stadium",10.6301202523676
+3,"Collingwood","GWS","GWS",0.452109971225123,"Marvel Stadium",-7.4942008009387
+3,"St Kilda","Brisbane Lions","Brisbane Lions",0.493168506229946,"Marvel Stadium",-1.07300615516071
+3,"Fremantle","Richmond","Fremantle",0.734111800452364,"Optus Stadium",26.0058679838896
+3,"Essendon","North Melbourne","Essendon",0.54959924284944,"Marvel Stadium",7.75954131188395
+3,"Port Adelaide","West Coast","Port Adelaide",0.784174638620106,"Adelaide Oval",38.9403281556895
+3,"Carlton","Melbourne","Carlton",0.53116894925201,"MCG",4.88818674129265

@@ -9,7 +9,7 @@ options(scipen = 99)
 # install.packages("gmailr")
 # library(gmailr)
 # 
-round <- 2
+round <- 3
 
 # round_pred_2024
 a <- c()
@@ -470,14 +470,14 @@ seas_preds <- read.csv(paste0("elo26/elo_2026_allpreds.csv"))
 seas_preds <- rbind(seas_preds, round_pred_2024)
 write.csv(seas_preds, "elo26/elo_2026_allpreds.csv", row.names = F)
 
-# seas_preds <- read.csv(paste0("elo26/chakri_2026_allpreds.csv"))
+# seas_preds <- read.csv(paste0("elo26/elo_2026_allpreds.csv"))
 # seas_preds <- rbind(seas_preds, round_pred_2024)
 # write.csv(seas_preds, "elo26/chakri_2026_allpreds.csv", row.names = F)
 
 
 
-##############################################################################################
-########## ########## ########## Measuring results ########## ########## ########## ##########
+# ############################################################################################
+# ######### ########## ########## Measuring results ########## ########## ########## ##########
 # ##############################################################################################
 # s26_res <- fitzRoy::fetch_results_squiggle(2026) %>%
 #   mutate(Margin = hscore-ascore) %>%
@@ -498,8 +498,8 @@ write.csv(seas_preds, "elo26/elo_2026_allpreds.csv", row.names = F)
 #   mutate(hteam = ifelse(hteam == "Greater Western Sydney", "GWS", hteam),
 #          ateam = ifelse(ateam == "Greater Western Sydney", "GWS", ateam)) %>%
 #   select("RoundNumber"="round", "HomeTeam"="hteam", "AwayTeam"=  "ateam",
-#          "Margin") %>% 
-#   mutate(winner = ifelse(Margin > 0, HomeTeam, AwayTeam), 
+#          "Margin") %>%
+#   mutate(winner = ifelse(Margin > 0, HomeTeam, AwayTeam),
 #          win_marg = abs(Margin))
 # #
 # # old_preds <- read.csv(paste0("elo26/old_2025_allpreds.csv")) %>%
@@ -519,13 +519,13 @@ write.csv(seas_preds, "elo26/elo_2026_allpreds.csv", row.names = F)
 # rbind(new_preds, curr_preds)%>%
 #   mutate(PredictedMargin = round(PredictedMargin, 6)) %>%
 #   right_join(s26_res, by = c("RoundNumber", "HomeTeam", "AwayTeam")) %>%
-#   # filter(RoundNumber < 3) %>%
+#   # filter(RoundNumber < 2) %>%
 #   mutate(marg_diff = abs(Margin - PredictedMargin),
 #          corrpic = ifelse(Winner == winner, 1, 0),
 #          corrpic = ifelse(Margin == 0, 1, corrpic),
 #          bits =ifelse(Margin > 0, 1 + log2(HomeProbability),1 + log2(1 -HomeProbability)),
 #          bits = ifelse(Margin == 0, 1 + 0.5*log2(HomeProbability*(1-HomeProbability)), bits))%>%
-#   filter(RoundNumber <= 0) %>% 
+#   # filter(RoundNumber <= 0) %>%
 #   group_by(type) %>%
 #   summarise(corr_pick = sum(corrpic),
 #             mae = mean(marg_diff), #summarise
