@@ -9,7 +9,7 @@ options(scipen = 99)
 # install.packages("gmailr")
 # library(gmailr)
 # 
-round <- 3
+round <- 4
 
 # round_pred_2024
 a <- c()
@@ -476,8 +476,8 @@ write.csv(seas_preds, "elo26/elo_2026_allpreds.csv", row.names = F)
 
 
 
-# ############################################################################################
-# ######### ########## ########## Measuring results ########## ########## ########## ##########
+############################################################################################
+######### ########## ########## Measuring results ########## ########## ########## ##########
 # ##############################################################################################
 # s26_res <- fitzRoy::fetch_results_squiggle(2026) %>%
 #   mutate(Margin = hscore-ascore) %>%
@@ -502,21 +502,21 @@ write.csv(seas_preds, "elo26/elo_2026_allpreds.csv", row.names = F)
 #   mutate(winner = ifelse(Margin > 0, HomeTeam, AwayTeam),
 #          win_marg = abs(Margin))
 # #
-# # old_preds <- read.csv(paste0("elo26/old_2025_allpreds.csv")) %>%
-# #   mutate(type = "model2024")
+# elo_preds <- read.csv(paste0("elo26/elo_2026_allpreds.csv")) %>%
+#   mutate(type = "elo")
 # # # %>%
 # # #   right_join(s25_res, by = c("RoundNumber", "HomeTeam", "AwayTeam")) %>%
 # # #   mutate(marg_diff = Margin - PredictedMargin)
 # #
 # new_preds <- read.csv(paste0("lm26/chakri_2026_allpreds.csv")) %>%
-#   mutate(type = "model2025")
+#   mutate(type = "lm")
 # #
 # #
 # curr_preds <-  read.csv(paste0("elo26/chakri_2026_allpreds.csv")) %>%
 #   mutate(type = "current")
 # #
 # #
-# rbind(new_preds, curr_preds)%>%
+# rbind(new_preds, curr_preds, elo_preds)%>%
 #   mutate(PredictedMargin = round(PredictedMargin, 6)) %>%
 #   right_join(s26_res, by = c("RoundNumber", "HomeTeam", "AwayTeam")) %>%
 #   # filter(RoundNumber < 2) %>%
