@@ -3,7 +3,7 @@ library(tidyverse)
 library(zoo)
 # library(gmailr)
 
-rd = 4
+rd = 5
 # pred_bits_opti
 # Load AFL data using fitzRoy
 # data <- fitzRoy::fetch_results_afltables(2015, 2022)
@@ -505,11 +505,12 @@ pred_bits_opti <- fix_data_pred %>%
                                      TRUE ~  HomeProbability))
 write.csv(pred_bits_opti, paste0("lm26/chakri_round_optibits",rd,".csv"), row.names = F)
 
-seas_preds <- read.csv(paste0("elo26/chakri_2026_allpreds.csv"))
-seas_preds <- rbind(seas_preds, pred_bits_opti)
-write.csv(seas_preds, "elo26/chakri_2026_allpreds.csv", row.names = F)
 
 seas_preds <- read.csv(paste0("lm26/chakri_2026_allpreds.csv"))
 seas_preds <- rbind(seas_preds, pred_bits_opti)
 write.csv(seas_preds, "lm26/chakri_2026_allpreds.csv", row.names = F)
 
+
+# seas_preds <- read.csv(paste0("elo26/chakri_2026_allpreds.csv"))
+# seas_preds <- rbind(seas_preds, pred_bits_opti)
+# write.csv(seas_preds, "elo26/chakri_2026_allpreds.csv", row.names = F)
