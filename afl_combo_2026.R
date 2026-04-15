@@ -1,7 +1,8 @@
 library(tidyverse)
 
-round <- 5
+round <- 6
 
+ai_preds <- read.csv(paste0("test26/chakri_round_optibits", round, ".csv"))
 
 elo_preds <- read.csv(paste0("elo26/round",round,"_2026.csv")) %>%
   mutate(type = "elo")
