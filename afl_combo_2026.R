@@ -1,6 +1,6 @@
 library(tidyverse)
 
-round <- 6
+round <- 7
 
 ai_preds <- read.csv(paste0("test26/chakri_round_optibits", round, ".csv"))
 
@@ -28,13 +28,13 @@ mixed <- rbind(lm_preds, elo_preds)%>%
 
 write.csv(mixed, paste0("mix26/round",round,"_2026.csv"), row.names = F)
 
-seas_preds <- read.csv(paste0("mix26/chakri_2026_allpreds.csv"))
+seas_preds <- read.csv(paste0("mix26/mix_2026_allpreds.csv"))
 seas_preds <- rbind(seas_preds, mixed)
 write.csv(seas_preds, "mix26/mix_2026_allpreds.csv", row.names = F)
 
 
 seas_preds <- read.csv(paste0("elo26/chakri_2026_allpreds.csv"))
-seas_preds <- rbind(seas_preds, mixed_all)
+seas_preds <- rbind(seas_preds, mixed)
 write.csv(seas_preds, "elo26/chakri_2026_allpreds.csv", row.names = F)
 
 

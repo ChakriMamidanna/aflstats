@@ -9,7 +9,7 @@ options(scipen = 99)
 # install.packages("gmailr")
 # library(gmailr)
 # 
-round <- 6
+round <- 8
 
 # round_pred_2024
 a <- c()
@@ -479,8 +479,8 @@ write.csv(seas_preds, "elo26/elo_2026_allpreds.csv", row.names = F)
 
 
 
-###########################################################################################
-###### ########## ########## Measuring results ########## ########## ########## ##########
+##########################################################################################
+# ##### ########## ########## Measuring results ########## ########## ########## ##########
 # ##############################################################################################
 # s26_res <- fitzRoy::fetch_results_squiggle(2026) %>%
 #   mutate(Margin = hscore-ascore) %>%
@@ -518,6 +518,10 @@ write.csv(seas_preds, "elo26/elo_2026_allpreds.csv", row.names = F)
 # #
 # curr_preds <-  read.csv(paste0("elo26/chakri_2026_allpreds.csv")) %>%
 #   mutate(type = "current")
+# 
+# ai_preds <- read.csv("test26/chakri_2026_allpreds.csv") %>%
+#   mutate(type = "ai")
+# 
 # #
 # #
 # optimal <- rbind(new_preds, curr_preds, elo_preds)%>%
@@ -541,22 +545,12 @@ write.csv(seas_preds, "elo26/elo_2026_allpreds.csv", row.names = F)
 #          "VenueName", "PredictedMargin", "type")
 # #
 # #
-# mixed <- rbind(new_preds, elo_preds)%>%
-#   mutate(PredictedMargin = round(PredictedMargin, 6)) %>%
-#   group_by(RoundNumber, HomeTeam) %>%
-#   mutate(HomeProbability = mean(HomeProbability),
-#          PredictedMargin = mean(PredictedMargin)) %>%
-#   ungroup() %>%
-#   mutate(Winner = ifelse(HomeProbability > 0.5, HomeTeam, AwayTeam)) %>%
-#   select(-type) %>%
-#   distinct() %>%
-#   mutate(type = "average") %>%
-#   select("RoundNumber", "HomeTeam", "AwayTeam", "Winner", "HomeProbability",
-#          "VenueName", "PredictedMargin", type)
+# mixed <- read.csv(paste0("mix26/mix_2026_allpreds.csv")) %>%
+#   mutate(type = "average")
 # #
 # #
 # 
-# rbind(new_preds, curr_preds, elo_preds, optimal, mixed)%>%
+# rbind(new_preds, curr_preds, elo_preds, ai_preds, optimal, mixed)%>%
 #   mutate(PredictedMargin = round(PredictedMargin, 6)) %>%
 #   right_join(s26_res, by = c("RoundNumber", "HomeTeam", "AwayTeam")) %>%
 #   # filter(RoundNumber == 5) %>%
