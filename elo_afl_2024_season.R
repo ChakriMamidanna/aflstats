@@ -479,8 +479,8 @@ write.csv(seas_preds, "elo26/elo_2026_allpreds.csv", row.names = F)
 
 
 
-# #########################################################################################
-# ##### ########## ########## Measuring results ########## ########## ########## ##########
+########################################################################################
+#### ########## ########## Measuring results ########## ########## ########## ##########
 # ##############################################################################################
 # s26_res <- fitzRoy::fetch_results_squiggle(2026) %>%
 #   mutate(Margin = hscore-ascore) %>%
@@ -553,7 +553,7 @@ write.csv(seas_preds, "elo26/elo_2026_allpreds.csv", row.names = F)
 # rbind(new_preds, curr_preds, elo_preds, ai_preds, optimal, mixed)%>%
 #   mutate(PredictedMargin = round(PredictedMargin, 6)) %>%
 #   right_join(s26_res, by = c("RoundNumber", "HomeTeam", "AwayTeam")) %>%
-#   # filter(RoundNumber == 5) %>%
+#   # filter(RoundNumber == 8) %>%
 #   mutate(marg_diff = abs(Margin - PredictedMargin),
 #          corrpic = ifelse(Winner == winner, 1, 0),
 #          corrpic = ifelse(Margin == 0, 1, corrpic),
