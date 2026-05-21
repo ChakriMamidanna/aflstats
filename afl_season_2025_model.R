@@ -2,8 +2,8 @@ library(fitzRoy)
 library(tidyverse)
 library(zoo)
 # library(gmailr)
-
-rd = 10
+setwd("~/Documents/r_repos/aflstats")
+rd = 11
 # pred_bits_opti
 # Load AFL data using fitzRoy
 # data <- fitzRoy::fetch_results_afltables(2015, 2022)
@@ -113,7 +113,7 @@ a25_clean_home <- a25 %>%
   filter(status == "CONCLUDED") %>%
   mutate(Season = year(utcStartTime),
          Date = as.Date(utcStartTime)) %>%
-  group_by(Season,  round.roundNumber, Date,  venue.name,  home.team.name, away.team.name,   team.name) %>%
+  group_by(Season,  round.roundNumber, Date,  venue.name,  home.team.club.name, away.team.club.name, home.team.name, away.team.name,  team.name) %>%
   summarise(hInside.50s      = sum(inside50s, na.rm = T),
             hMarks.Inside.50 = sum(marksInside50, na.rm = T),
             hTackles         = sum(tackles, na.rm = T),
@@ -126,16 +126,17 @@ a25_clean_home <- a25 %>%
             hclearances = sum(clearances.totalClearances, na.rm = T),
             hhitouts = sum(extendedStats.hitoutsToAdvantage, na.rm = T),
             hturnovers = sum(turnovers, na.rm = T) ) %>%
-  filter(home.team.name == team.name) %>%
-  select(Season,"Round"= round.roundNumber, Date,"Venue"= venue.name,"Home.team"= home.team.name,
-         "Away.team"=  away.team.name, htr, hInside.50s, hMarks.Inside.50, hTackles,hTacklesi50,hinterceptMarks,
+  filter(home.team.name == team.name) %>% 
+  ungroup() %>% 
+  select(Season,"Round"= round.roundNumber, Date,"Venue"= venue.name,"Home.team"= home.team.club.name,
+         "Away.team"=  away.team.club.name, htr, hInside.50s, hMarks.Inside.50, hTackles,hTacklesi50,hinterceptMarks,
          hOne.Percenters, hcontestedPossessions, hshotsAtGoal, hclearances, hhitouts, hturnovers  )
 
 a25_clean_away <- a25 %>%
   filter(status == "CONCLUDED") %>%
   mutate(Season = year(utcStartTime),
          Date = as.Date(utcStartTime)) %>%
-  group_by(Season,  round.roundNumber, Date,  venue.name,  home.team.name, away.team.name,   team.name) %>%
+  group_by(Season,  round.roundNumber, Date,  venue.name,  home.team.club.name, away.team.club.name, home.team.name, away.team.name,  team.name) %>%
   summarise(aInside.50s      = sum(inside50s, na.rm = T),
             aMarks.Inside.50 = sum(marksInside50, na.rm = T),
             aTackles         = sum(tackles, na.rm = T),
@@ -149,8 +150,9 @@ a25_clean_away <- a25 %>%
             ahitouts = sum(extendedStats.hitoutsToAdvantage, na.rm = T),
             aturnovers = sum(turnovers, na.rm = T)  ) %>%
   filter(away.team.name == team.name) %>%
-  select(Season,"Round"= round.roundNumber, Date,"Venue"= venue.name,"Home.team"= home.team.name,
-         "Away.team"=  away.team.name, atr, aInside.50s, aMarks.Inside.50, aTackles, aTacklesi50,ainterceptMarks,
+  ungroup() %>% 
+  select(Season,"Round"= round.roundNumber, Date,"Venue"= venue.name,"Home.team"= home.team.club.name,
+         "Away.team"=  away.team.club.name, atr, aInside.50s, aMarks.Inside.50, aTackles, aTacklesi50,ainterceptMarks,
          aOne.Percenters, acontestedPossessions, ashotsAtGoal, aclearances, ahitouts, aturnovers)
 
 a25_clean <- left_join(a25_clean_home, a25_clean_away, by = c("Season", "Round", "Date", "Venue", "Home.team", "Away.team"))
@@ -175,7 +177,8 @@ stats25_sum <- a25_clean %>%
 
 # dput(names(results_25))
 # 
-results_25 <- fitzRoy::fetch_results_afl(2026)  %>%
+
+results_25 <- fitzRoy::fetch_results(2026)%>% 
   mutate(    Margin = homeTeamScore.matchScore.totalScore-awayTeamScore.matchScore.totalScore)  %>% 
   mutate(match.homeTeam.name = ifelse(tolower(match.homeTeam.name) == "western bulldogs", "Footscray",   match.homeTeam.name),
          match.awayTeam.name = ifelse(tolower(match.awayTeam.name) == "western bulldogs", "Footscray",   match.awayTeam.name)) %>%
@@ -191,6 +194,18 @@ results_25 <- fitzRoy::fetch_results_afl(2026)  %>%
          match.awayTeam.name = ifelse(tolower(match.awayTeam.name) == "geelong cats", "Geelong",         match.awayTeam.name)) %>%
   mutate(match.homeTeam.name = ifelse(tolower(match.homeTeam.name) == "gws giants", "GWS",               match.homeTeam.name),
          match.awayTeam.name = ifelse(tolower(match.awayTeam.name) == "gws giants", "GWS",               match.awayTeam.name))%>% 
+  mutate(match.homeTeam.name = ifelse(tolower(match.homeTeam.name) == "waalitj marawar", "West Coast",               match.homeTeam.name),
+         match.awayTeam.name = ifelse(tolower(match.awayTeam.name) == "waalitj marawar", "West Coast",               match.awayTeam.name))%>% 
+  mutate(match.homeTeam.name = ifelse(tolower(match.homeTeam.name) == "euro-yroke", "St Kilda",               match.homeTeam.name),
+         match.awayTeam.name = ifelse(tolower(match.awayTeam.name) == "euro-yroke", "St Kilda",               match.awayTeam.name))%>% 
+  mutate(match.homeTeam.name = ifelse(tolower(match.homeTeam.name) == "narrm", "Melbourne",               match.homeTeam.name),
+         match.awayTeam.name = ifelse(tolower(match.awayTeam.name) == "narrm", "Melbourne",               match.awayTeam.name))%>% 
+  mutate(match.homeTeam.name = ifelse(tolower(match.homeTeam.name) == "walyalup", "Fremantle",               match.homeTeam.name),
+         match.awayTeam.name = ifelse(tolower(match.awayTeam.name) == "walyalup", "Fremantle",               match.awayTeam.name))%>% 
+  mutate(match.homeTeam.name = ifelse(tolower(match.homeTeam.name) == "yartapuulti", "Port Adelaide",               match.homeTeam.name),
+         match.awayTeam.name = ifelse(tolower(match.awayTeam.name) == "yartapuulti", "Port Adelaide",               match.awayTeam.name))%>% 
+  mutate(match.homeTeam.name = ifelse(tolower(match.homeTeam.name) == "kuwarna", "Adelaide",               match.homeTeam.name),
+         match.awayTeam.name = ifelse(tolower(match.awayTeam.name) == "kuwarna", "Adelaide",               match.awayTeam.name)) %>% 
   select(
     Game = matchId,
     Date = match.date,
@@ -210,6 +225,7 @@ results_25 <- fitzRoy::fetch_results_afl(2026)  %>%
     Round.Number = round.roundNumber
   ) %>%
   mutate(
+    Date = as.Date(Date),
     Season = as.numeric(Season),
     # Ensure Round.Number has leading zeros
     Round.Number = ifelse(Round.Number < 10, paste0("0", Round.Number), as.character(Round.Number)),

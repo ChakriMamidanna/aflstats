@@ -9,7 +9,7 @@ options(scipen = 99)
 # install.packages("gmailr")
 # library(gmailr)
 # 
-round <- 10
+round <- 11
 
 # round_pred_2024
 a <- c()
@@ -185,6 +185,18 @@ results_24 <- fitzRoy::fetch_results(2026) %>%
          match.awayTeam.name = ifelse(tolower(match.awayTeam.name) == "geelong cats", "Geelong",         match.awayTeam.name)) %>%
   mutate(match.homeTeam.name = ifelse(tolower(match.homeTeam.name) == "gws giants", "GWS",               match.homeTeam.name),
          match.awayTeam.name = ifelse(tolower(match.awayTeam.name) == "gws giants", "GWS",               match.awayTeam.name))%>% 
+  mutate(match.homeTeam.name = ifelse(tolower(match.homeTeam.name) == "waalitj marawar", "West Coast",               match.homeTeam.name),
+         match.awayTeam.name = ifelse(tolower(match.awayTeam.name) == "waalitj marawar", "West Coast",               match.awayTeam.name))%>% 
+  mutate(match.homeTeam.name = ifelse(tolower(match.homeTeam.name) == "euro-yroke", "St Kilda",               match.homeTeam.name),
+         match.awayTeam.name = ifelse(tolower(match.awayTeam.name) == "euro-yroke", "St Kilda",               match.awayTeam.name))%>% 
+  mutate(match.homeTeam.name = ifelse(tolower(match.homeTeam.name) == "narrm", "Melbourne",               match.homeTeam.name),
+         match.awayTeam.name = ifelse(tolower(match.awayTeam.name) == "narrm", "Melbourne",               match.awayTeam.name))%>% 
+  mutate(match.homeTeam.name = ifelse(tolower(match.homeTeam.name) == "walyalup", "Fremantle",               match.homeTeam.name),
+         match.awayTeam.name = ifelse(tolower(match.awayTeam.name) == "walyalup", "Fremantle",               match.awayTeam.name))%>% 
+  mutate(match.homeTeam.name = ifelse(tolower(match.homeTeam.name) == "yartapuulti", "Port Adelaide",               match.homeTeam.name),
+         match.awayTeam.name = ifelse(tolower(match.awayTeam.name) == "yartapuulti", "Port Adelaide",               match.awayTeam.name))%>% 
+  mutate(match.homeTeam.name = ifelse(tolower(match.homeTeam.name) == "kuwarna", "Adelaide",               match.homeTeam.name),
+         match.awayTeam.name = ifelse(tolower(match.awayTeam.name) == "kuwarna", "Adelaide",               match.awayTeam.name)) %>% 
   select(
     Game = matchId,
     Date = match.date,
