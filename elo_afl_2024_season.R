@@ -8,13 +8,13 @@ setwd("~/Documents/r_repos/aflstats")
 options(scipen = 99)
 # install.packages("gmailr")
 # library(gmailr)
-# 
-round <- 11
+#
+round <- 12
 
 # round_pred_2024
 a <- c()
 afl_player_stats <- c()
-# 
+#
 # for(year in 2016:2025){
 # a <- fitzRoy::fetch_player_stats_afl(year)
 # a_clean_home <- a %>%
@@ -36,7 +36,7 @@ afl_player_stats <- c()
 #   select(Season,"Round"= round.roundNumber, Date,"Venue"= venue.name,"Home.team"= home.team.name,
 #          "Away.team"=  away.team.name, hInside.50s, hMarks.Inside.50, hTackles,hTacklesi50, hOne.Percenters,
 #          hcontestedPossessions, hshotsAtGoal, hclearances, hhitouts, hturnovers  )
-# 
+#
 # a_clean_away <- a %>%
 #   filter(status == "CONCLUDED") %>%
 #   mutate(Season = year(utcStartTime),
@@ -56,12 +56,12 @@ afl_player_stats <- c()
 #   select(Season,"Round"= round.roundNumber, Date,"Venue"= venue.name,"Home.team"= home.team.name,
 #          "Away.team"=  away.team.name,aInside.50s, aMarks.Inside.50, aTackles, aTacklesi50, aOne.Percenters,
 #          acontestedPossessions, ashotsAtGoal, aclearances, ahitouts, aturnovers)
-# 
+#
 # a_clean <- left_join(a_clean_home, a_clean_away, by = c("Season", "Round", "Date", "Venue", "Home.team", "Away.team"))
-# 
+#
 #   afl_player_stats <- rbind(a_clean,afl_player_stats)
 # }
-# 
+#
 # stats_sum <- afl_player_stats %>%
 #   mutate(Home.team = ifelse(Home.team == "Western Bulldogs", "Footscray", Home.team),
 #          Away.team = ifelse(Away.team == "Western Bulldogs", "Footscray", Away.team)) %>%
@@ -79,13 +79,13 @@ afl_player_stats <- c()
 #          Away.team = ifelse(Away.team == "GWS GIANTS", "GWS", Away.team)) %>%
 #   ungroup() %>%
 #   select(-Round)
-# 
-# 
+#
+#
 # results_orig <- fitzRoy::fetch_results_afltables(2016:2025) %>%
 #   mutate(Round.Number = ifelse(Round.Number < 10, paste0("0",Round.Number), Round.Number)) %>%
 #   mutate(seas_rnd =as.numeric(paste0(Season, Round.Number))) %>%
 #   filter(!is.na(seas_rnd))
-# 
+#
 # result_orig_withstats <- results_orig %>%
 #   select(-Venue) %>%
 #   left_join(stats_sum, by = c("Date",
@@ -94,14 +94,14 @@ afl_player_stats <- c()
 #                               "Away.Team"="Away.team"))  %>%
 #   # filter(Round.Type != "Finals")
 #   filter(Game != 14786)
-# # 
+# #
 # # # result_orig_withstats <- read.csv("result_withstats_15to23.csv")
 # # # write.csv(result_orig_withstats, "result_withstats_15to23.csv", row.names = F)
 # saveRDS(result_orig_withstats, "result_withstats_16to25.rds")
 result_orig_withstats <- readRDS("result_withstats_16to25.rds")
 
 # dput(names(result_orig_withstats24))
-add_2024_stats <- fitzRoy::fetch_player_stats_afl(2026) #%>% 
+add_2024_stats <- fitzRoy::fetch_player_stats_afl(2026) #%>%
   # filter(round.roundNumber == 0)
 
 
@@ -114,16 +114,16 @@ add_2024_stats_clean_home <- add_2024_stats %>%
             hMarks.Inside.50 = sum(marksInside50),
             hTackles         = sum(tackles),
             hTacklesi50         = sum(tacklesInside50),
-            hOne.Percenters  = sum(onePercenters), 
-            hcontestedPossessions = sum(contestedPossessions), 
-            hshotsAtGoal = sum(shotsAtGoal), 
-            hclearances = sum(clearances.totalClearances), 
-            hhitouts = sum(extendedStats.hitoutsToAdvantage), 
+            hOne.Percenters  = sum(onePercenters),
+            hcontestedPossessions = sum(contestedPossessions),
+            hshotsAtGoal = sum(shotsAtGoal),
+            hclearances = sum(clearances.totalClearances),
+            hhitouts = sum(extendedStats.hitoutsToAdvantage),
             hturnovers = sum(turnovers)) %>%
   filter(home.team.name == team.name) %>%
-  ungroup() %>% 
+  ungroup() %>%
   select(Season,"Round"= round.roundNumber, Date,"Venue"= venue.name,"Home.team"= home.team.club.name,
-         "Away.team"=  away.team.club.name, hInside.50s, hMarks.Inside.50, hTackles,hTacklesi50, hOne.Percenters, 
+         "Away.team"=  away.team.club.name, hInside.50s, hMarks.Inside.50, hTackles,hTacklesi50, hOne.Percenters,
          hcontestedPossessions, hshotsAtGoal, hclearances, hhitouts , hturnovers )
 
 add_2024_stats_clean_away <- add_2024_stats %>%
@@ -136,18 +136,18 @@ add_2024_stats_clean_away <- add_2024_stats %>%
             aTackles         = sum(tackles),
             aTacklesi50         = sum(tacklesInside50),
             aOne.Percenters  = sum(onePercenters),
-            acontestedPossessions = sum(contestedPossessions), 
-            ashotsAtGoal = sum(shotsAtGoal), 
-            aclearances = sum(clearances.totalClearances), 
+            acontestedPossessions = sum(contestedPossessions),
+            ashotsAtGoal = sum(shotsAtGoal),
+            aclearances = sum(clearances.totalClearances),
             ahitouts = sum(extendedStats.hitoutsToAdvantage) ,
             aturnovers = sum(turnovers)) %>%
   filter(away.team.name == team.name) %>%
-  ungroup() %>% 
+  ungroup() %>%
   select(Season,"Round"= round.roundNumber, Date,"Venue"= venue.name,"Home.team"= home.team.club.name,
-         "Away.team"=  away.team.club.name,aInside.50s, aMarks.Inside.50, aTackles, aTacklesi50, aOne.Percenters, 
+         "Away.team"=  away.team.club.name,aInside.50s, aMarks.Inside.50, aTackles, aTacklesi50, aOne.Percenters,
          acontestedPossessions, ashotsAtGoal, aclearances, ahitouts, aturnovers)
 
-add_2024_stats_clean <- left_join(add_2024_stats_clean_home, add_2024_stats_clean_away, 
+add_2024_stats_clean <- left_join(add_2024_stats_clean_home, add_2024_stats_clean_away,
                      by = c("Season", "Round", "Date", "Venue", "Home.team", "Away.team")) %>%
   mutate(Home.team = ifelse(Home.team == "Western Bulldogs", "Footscray", Home.team),
          Away.team = ifelse(Away.team == "Western Bulldogs", "Footscray", Away.team)) %>%
@@ -162,7 +162,7 @@ add_2024_stats_clean <- left_join(add_2024_stats_clean_home, add_2024_stats_clea
   mutate(Home.team = ifelse(Home.team == "Adelaide Crows", "Adelaide", Home.team),
          Away.team = ifelse(Away.team == "Adelaide Crows", "Adelaide", Away.team)) %>%
   mutate(Home.team = ifelse(Home.team == "Geelong Cats", "Geelong", Home.team),
-         Away.team = ifelse(Away.team == "Geelong Cats", "Geelong", Away.team)) %>%  
+         Away.team = ifelse(Away.team == "Geelong Cats", "Geelong", Away.team)) %>%
   mutate(Home.team = ifelse(Home.team == "GWS GIANTS", "GWS", Home.team),
          Away.team = ifelse(Away.team == "GWS GIANTS", "GWS", Away.team)) %>%
   ungroup() %>%
@@ -170,7 +170,7 @@ add_2024_stats_clean <- left_join(add_2024_stats_clean_home, add_2024_stats_clea
 
 
 results_24 <- fitzRoy::fetch_results(2026) %>%
-  mutate(    Margin = homeTeamScore.matchScore.totalScore-awayTeamScore.matchScore.totalScore)  %>% 
+  mutate(    Margin = homeTeamScore.matchScore.totalScore-awayTeamScore.matchScore.totalScore)  %>%
   mutate(match.homeTeam.name = ifelse(tolower(match.homeTeam.name) == "western bulldogs", "Footscray",   match.homeTeam.name),
          match.awayTeam.name = ifelse(tolower(match.awayTeam.name) == "western bulldogs", "Footscray",   match.awayTeam.name)) %>%
   mutate(match.homeTeam.name = ifelse(tolower(match.homeTeam.name) == "gold coast suns", "Gold Coast",   match.homeTeam.name),
@@ -184,19 +184,19 @@ results_24 <- fitzRoy::fetch_results(2026) %>%
   mutate(match.homeTeam.name = ifelse(tolower(match.homeTeam.name) == "geelong cats", "Geelong",         match.homeTeam.name),
          match.awayTeam.name = ifelse(tolower(match.awayTeam.name) == "geelong cats", "Geelong",         match.awayTeam.name)) %>%
   mutate(match.homeTeam.name = ifelse(tolower(match.homeTeam.name) == "gws giants", "GWS",               match.homeTeam.name),
-         match.awayTeam.name = ifelse(tolower(match.awayTeam.name) == "gws giants", "GWS",               match.awayTeam.name))%>% 
+         match.awayTeam.name = ifelse(tolower(match.awayTeam.name) == "gws giants", "GWS",               match.awayTeam.name))%>%
   mutate(match.homeTeam.name = ifelse(tolower(match.homeTeam.name) == "waalitj marawar", "West Coast",               match.homeTeam.name),
-         match.awayTeam.name = ifelse(tolower(match.awayTeam.name) == "waalitj marawar", "West Coast",               match.awayTeam.name))%>% 
+         match.awayTeam.name = ifelse(tolower(match.awayTeam.name) == "waalitj marawar", "West Coast",               match.awayTeam.name))%>%
   mutate(match.homeTeam.name = ifelse(tolower(match.homeTeam.name) == "euro-yroke", "St Kilda",               match.homeTeam.name),
-         match.awayTeam.name = ifelse(tolower(match.awayTeam.name) == "euro-yroke", "St Kilda",               match.awayTeam.name))%>% 
+         match.awayTeam.name = ifelse(tolower(match.awayTeam.name) == "euro-yroke", "St Kilda",               match.awayTeam.name))%>%
   mutate(match.homeTeam.name = ifelse(tolower(match.homeTeam.name) == "narrm", "Melbourne",               match.homeTeam.name),
-         match.awayTeam.name = ifelse(tolower(match.awayTeam.name) == "narrm", "Melbourne",               match.awayTeam.name))%>% 
+         match.awayTeam.name = ifelse(tolower(match.awayTeam.name) == "narrm", "Melbourne",               match.awayTeam.name))%>%
   mutate(match.homeTeam.name = ifelse(tolower(match.homeTeam.name) == "walyalup", "Fremantle",               match.homeTeam.name),
-         match.awayTeam.name = ifelse(tolower(match.awayTeam.name) == "walyalup", "Fremantle",               match.awayTeam.name))%>% 
+         match.awayTeam.name = ifelse(tolower(match.awayTeam.name) == "walyalup", "Fremantle",               match.awayTeam.name))%>%
   mutate(match.homeTeam.name = ifelse(tolower(match.homeTeam.name) == "yartapuulti", "Port Adelaide",               match.homeTeam.name),
-         match.awayTeam.name = ifelse(tolower(match.awayTeam.name) == "yartapuulti", "Port Adelaide",               match.awayTeam.name))%>% 
+         match.awayTeam.name = ifelse(tolower(match.awayTeam.name) == "yartapuulti", "Port Adelaide",               match.awayTeam.name))%>%
   mutate(match.homeTeam.name = ifelse(tolower(match.homeTeam.name) == "kuwarna", "Adelaide",               match.homeTeam.name),
-         match.awayTeam.name = ifelse(tolower(match.awayTeam.name) == "kuwarna", "Adelaide",               match.awayTeam.name)) %>% 
+         match.awayTeam.name = ifelse(tolower(match.awayTeam.name) == "kuwarna", "Adelaide",               match.awayTeam.name)) %>%
   select(
     Game = matchId,
     Date = match.date,
@@ -229,11 +229,11 @@ result_24_withstats <- results_24 %>%
   left_join(add_2024_stats_clean, by = c("Date",
                               "Home.Team"= "Home.team",
                               "Season",
-                              "Away.Team"="Away.team"))  
+                              "Away.Team"="Away.team"))
 
-result_orig_withstats24 <- rbind(result_orig_withstats, result_24_withstats) 
+result_orig_withstats24 <- rbind(result_orig_withstats, result_24_withstats)
 
-# nah <- result_orig_withstats24 %>% 
+# nah <- result_orig_withstats24 %>%
   # summarise(across(everything(), ~ sum(is.na(.x))))
 # fixture_footywire <- fitzRoy::fetch_fixture_footywire(2024)
 # fix_24 <- fitzRoy::fetch_fixture_squiggle(2024)
@@ -241,10 +241,10 @@ f24 <- fitzRoy::fetch_fixture(2026)
 
 
 
-away_state <- f24 %>% 
-  distinct(home.team.club.name, venue.state)%>% 
-  arrange(tolower(home.team.club.name)) %>% 
-  select("Away.team" = home.team.club.name,"away.state" =venue.state) %>% 
+away_state <- f24 %>%
+  distinct(home.team.club.name, venue.state)%>%
+  arrange(tolower(home.team.club.name)) %>%
+  select("Away.team" = home.team.club.name,"away.state" =venue.state) %>%
   mutate(is_home_state = 1) %>%
   filter( away.state != "SA" | Away.team == "Adelaide Crows" | Away.team == "Port Adelaide" ) %>%
   mutate(Away.team = ifelse(Away.team == "Western Bulldogs", "Footscray", Away.team)) %>%
@@ -252,13 +252,13 @@ away_state <- f24 %>%
   mutate(Away.team = ifelse(Away.team == "West Coast Eagles", "West Coast", Away.team)) %>%
   mutate(Away.team = ifelse(Away.team == "Sydney Swans", "Sydney", Away.team)) %>%
   mutate(Away.team = ifelse(Away.team == "Adelaide Crows", "Adelaide", Away.team)) %>%
-  mutate(Away.team = ifelse(Away.team == "Geelong Cats", "Geelong", Away.team)) %>%  
+  mutate(Away.team = ifelse(Away.team == "Geelong Cats", "Geelong", Away.team)) %>%
   mutate(Away.team = ifelse(Away.team == "GWS GIANTS", "GWS", Away.team))
 
-home_state <- f24 %>% 
-  distinct(home.team.club.name, venue.state) %>% 
-  arrange(tolower(home.team.club.name)) %>% 
-  select("Home.team" = home.team.club.name,"home.state" =venue.state) %>% 
+home_state <- f24 %>%
+  distinct(home.team.club.name, venue.state) %>%
+  arrange(tolower(home.team.club.name)) %>%
+  select("Home.team" = home.team.club.name,"home.state" =venue.state) %>%
   mutate(is_home_state_home = 1) %>%
   filter( home.state != "SA" | Home.team == "Adelaide Crows" | Home.team == "Port Adelaide") %>%
   mutate(Home.team = ifelse(Home.team == "Western Bulldogs", "Footscray", Home.team)) %>%
@@ -266,14 +266,14 @@ home_state <- f24 %>%
   mutate(Home.team = ifelse(Home.team == "West Coast Eagles", "West Coast", Home.team)) %>%
   mutate(Home.team = ifelse(Home.team == "Sydney Swans", "Sydney", Home.team)) %>%
   mutate(Home.team = ifelse(Home.team == "Adelaide Crows", "Adelaide", Home.team)) %>%
-  mutate(Home.team = ifelse(Home.team == "Geelong Cats", "Geelong", Home.team)) %>%  
+  mutate(Home.team = ifelse(Home.team == "Geelong Cats", "Geelong", Home.team)) %>%
   mutate(Home.team = ifelse(Home.team == "GWS GIANTS", "GWS", Home.team))
 
-fix_24clean <- f24 %>% 
-  mutate(year = year(utcStartTime)) %>% 
-  select("Date" = utcStartTime, "Season" = year ,  "Round" = round.roundNumber, 
-         "Home.team"= home.team.club.name ,#"hscore"= home.score.totalScore,    
-         "Away.team" = away.team.club.name ,#"ascore"= away.score.totalScore, 
+fix_24clean <- f24 %>%
+  mutate(year = year(utcStartTime)) %>%
+  select("Date" = utcStartTime, "Season" = year ,  "Round" = round.roundNumber,
+         "Home.team"= home.team.club.name ,#"hscore"= home.score.totalScore,
+         "Away.team" = away.team.club.name ,#"ascore"= away.score.totalScore,
          Venue = "venue.name", "state" =venue.state) %>%
   mutate(Home.team = ifelse(Home.team == "Western Bulldogs", "Footscray", Home.team),
          Away.team = ifelse(Away.team == "Western Bulldogs", "Footscray", Away.team)) %>%
@@ -286,13 +286,13 @@ fix_24clean <- f24 %>%
   mutate(Home.team = ifelse(Home.team == "Adelaide Crows", "Adelaide", Home.team),
          Away.team = ifelse(Away.team == "Adelaide Crows", "Adelaide", Away.team)) %>%
   mutate(Home.team = ifelse(Home.team == "Geelong Cats", "Geelong", Home.team),
-         Away.team = ifelse(Away.team == "Geelong Cats", "Geelong", Away.team)) %>%  
+         Away.team = ifelse(Away.team == "Geelong Cats", "Geelong", Away.team)) %>%
   mutate(Home.team = ifelse(Home.team == "GWS GIANTS", "GWS", Home.team),
-         Away.team = ifelse(Away.team == "GWS GIANTS", "GWS", Away.team)) %>% 
-  left_join(home_state, by = c("Home.team", "state" = "home.state")) %>% 
-  left_join(away_state, by = c("Away.team", "state" = "away.state")) %>% 
-  mutate(is_home_state_home = ifelse(is.na(is_home_state_home), 0 , 1))%>% 
-  mutate(is_home_state = ifelse(is.na(is_home_state), 0 , 1)) %>% 
+         Away.team = ifelse(Away.team == "GWS GIANTS", "GWS", Away.team)) %>%
+  left_join(home_state, by = c("Home.team", "state" = "home.state")) %>%
+  left_join(away_state, by = c("Away.team", "state" = "away.state")) %>%
+  mutate(is_home_state_home = ifelse(is.na(is_home_state_home), 0 , 1))%>%
+  mutate(is_home_state = ifelse(is.na(is_home_state), 0 , 1)) %>%
   mutate(is_home_adv = ifelse(is_home_state_home == is_home_state, 0,1))
 
 
@@ -307,10 +307,10 @@ marg_elo = 80
 map_margin_to_outcome <- function(score, marg_elo = 80) {
   # Ensure the score is within the bounds of [-80, 80]
   score <- pmin(pmax(score, -80), 80)
-  
+
   # Inverse the score transformation
   elo_perc <- (asin(score / marg_elo) / pi) + 0.5
-  
+
   return(elo_perc)
 }
 # map_score_to_elo(27.09)
@@ -327,7 +327,7 @@ map_elo_to_score <- function(elo_perc, marg.max = marg_elo, marg.min = -marg_elo
   score %>% pmin(80) %>% pmax(-80)
 }
 # y= (x-h)^2 + k
-# score = sin((elo_perc - 0.5) * pi) 
+# score = sin((elo_perc - 0.5) * pi)
 # ((asin((12/marg_elo)))*2.5) + 0.5
 
 # map_elo_to_score <- function(elo_perc, marg.max = marg_elo, marg.min = -marg_elo){
@@ -344,22 +344,22 @@ map_elo_to_score <- function(elo_perc, marg.max = marg_elo, marg.min = -marg_elo
 
 # Getting elo numbers for all
 
-exp_score_lm_homefull <- result_orig_withstats24  %>% 
-  mutate(home.scoring.shots = Home.Goals + Home.Behinds) %>% 
+exp_score_lm_homefull <- result_orig_withstats24  %>%
+  mutate(home.scoring.shots = Home.Goals + Home.Behinds) %>%
   lm(Home.Points ~ hshotsAtGoal  + hMarks.Inside.50 + hclearances + hturnovers, data = .)
 
-exp_score_lm_awayfull <- result_orig_withstats24  %>% 
-  mutate(away.scoring.shots = Away.Goals + Away.Behinds) %>% 
+exp_score_lm_awayfull <- result_orig_withstats24  %>%
+  mutate(away.scoring.shots = Away.Goals + Away.Behinds) %>%
   lm(Away.Points ~  ashotsAtGoal  + aMarks.Inside.50  + aclearances + aturnovers, data = .)
 
-results_withlmfull <- result_orig_withstats24 %>% 
-  filter(!is.na(hhitouts)) %>% 
+results_withlmfull <- result_orig_withstats24 %>%
+  filter(!is.na(hhitouts)) %>%
   mutate(newexpscore_home = round(predict(exp_score_lm_homefull, newdata = .),2),
          newexpscore_away =round( predict(exp_score_lm_awayfull, newdata = .),2))%>%
   mutate(homediff = Home.Points - newexpscore_home,
-         awaydiff = Away.Points - newexpscore_away, 
-         exp_margin = newexpscore_home - newexpscore_away, 
-         real_margin = Margin, 
+         awaydiff = Away.Points - newexpscore_away,
+         exp_margin = newexpscore_home - newexpscore_away,
+         real_margin = Margin,
          marg_diff = Margin - exp_margin)
 
 
@@ -379,7 +379,7 @@ elo.data_exp_lmfull <- elo.run(
     regress(Season, 1200, carryOver) +
     group(seas_rnd),
   initial.elos = 1200,
-  k = k_val, 
+  k = k_val,
   history = T,
   data = results_withlmfull
 )
@@ -388,18 +388,18 @@ elo.data_exp_lmfull <- elo.run(
 # abs <- as.data.frame(elo.data_exp_lmfull) %>%
 # mutate(ar = row_number())#
 fullelo <- results_withlmfull %>%
-  filter(!is.na(seas_rnd)) %>% 
-  cbind(.,as.data.frame(elo.data_exp_lmfull))%>% 
-  mutate(seas_rnd = as.numeric(seas_rnd)) %>% 
-  mutate(rnd_rank = dense_rank(seas_rnd)) %>% 
+  filter(!is.na(seas_rnd)) %>%
+  cbind(.,as.data.frame(elo.data_exp_lmfull))%>%
+  mutate(seas_rnd = as.numeric(seas_rnd)) %>%
+  mutate(rnd_rank = dense_rank(seas_rnd)) %>%
   mutate(pred_marg = map_elo_to_score(p.A),
-         bigdiff = elo.A - elo.B) %>% 
-  select("Game", "Date", "Round", "Home.Team", "Home.Goals", "Home.Behinds", 
-         "Home.Points", "Away.Team", "Away.Goals", "Away.Behinds", "Away.Points", 
-         "Margin", "Season", "Round.Type", "Round.Number", "seas_rnd", 
-         "Venue",  "newexpscore_home", 
-         "newexpscore_away", "homediff", "awaydiff", "exp_margin", "real_margin", 
-         "marg_diff", "team.A", "team.B", "p.A", "wins.A", "update.A", 
+         bigdiff = elo.A - elo.B) %>%
+  select("Game", "Date", "Round", "Home.Team", "Home.Goals", "Home.Behinds",
+         "Home.Points", "Away.Team", "Away.Goals", "Away.Behinds", "Away.Points",
+         "Margin", "Season", "Round.Type", "Round.Number", "seas_rnd",
+         "Venue",  "newexpscore_home",
+         "newexpscore_away", "homediff", "awaydiff", "exp_margin", "real_margin",
+         "marg_diff", "team.A", "team.B", "p.A", "wins.A", "update.A",
          "update.B", "elo.A", "elo.B", "rnd_rank", "pred_marg", "bigdiff"
   )
 
@@ -423,12 +423,12 @@ hga_by_row <- results_withlmfull %>%
     # wins before this match
   ) %>%
   ungroup() %>%
-  select(Game, Home.Team, Venue, cg, cw) %>% 
-  mutate(HGA_perc = cw/cg) %>% 
-  arrange(desc(Game)) %>% 
-  ungroup() %>% 
-  distinct(Home.Team, Venue, .keep_all = T) %>% 
-  filter(cg > 0)%>% 
+  select(Game, Home.Team, Venue, cg, cw) %>%
+  mutate(HGA_perc = cw/cg) %>%
+  arrange(desc(Game)) %>%
+  ungroup() %>%
+  distinct(Home.Team, Venue, .keep_all = T) %>%
+  filter(cg > 0)%>%
   select(Home.Team, Venue, HGA_perc)
 
 
@@ -441,42 +441,42 @@ aga_by_row <- results_withlmfull %>%
     # wins before this match
   ) %>%
   ungroup() %>%
-  select(Game, Away.Team, Venue, cg, cw) %>% 
-  mutate(AGA_perc = cw/cg) %>% 
-  arrange(desc(Game)) %>% 
-  ungroup() %>% 
-  distinct(Away.Team, Venue, .keep_all = T) %>% 
-  filter(cg > 0) %>% 
+  select(Game, Away.Team, Venue, cg, cw) %>%
+  mutate(AGA_perc = cw/cg) %>%
+  arrange(desc(Game)) %>%
+  ungroup() %>%
+  distinct(Away.Team, Venue, .keep_all = T) %>%
+  filter(cg > 0) %>%
   select(Away.Team, Venue, AGA_perc)
 
 fixture_exp_pred_lm <- fix_24clean %>%
-  arrange(Date) %>% 
-  left_join(current_elo_home, by = c("Home.team" = "team_name")) %>% 
-  left_join(current_elo_away, by = c("Away.team" = "team_name")) %>% 
-  left_join(hga_by_row, by = c("Home.team"="Home.Team", "Venue"))%>% 
-  left_join(aga_by_row, by = c("Away.team"="Away.Team", "Venue")) %>% 
+  arrange(Date) %>%
+  left_join(current_elo_home, by = c("Home.team" = "team_name")) %>%
+  left_join(current_elo_away, by = c("Away.team" = "team_name")) %>%
+  left_join(hga_by_row, by = c("Home.team"="Home.Team", "Venue"))%>%
+  left_join(aga_by_row, by = c("Away.team"="Away.Team", "Venue")) %>%
   mutate(elo_prob_home =case_when(!is.na(AGA_perc) & !is.na(HGA_perc) ~  elo.prob(home_elo+(HGA_perc*hga_points) - (AGA_perc*aga_points), away_elo) ,
                                   is.na(AGA_perc) & !is.na(HGA_perc) ~  elo.prob(home_elo+(HGA_perc*hga_points) - (0.5*aga_points), away_elo) ,
                                   !is.na(AGA_perc) & is.na(HGA_perc) ~  elo.prob(home_elo+(0.5*hga_points) - (AGA_perc*aga_points), away_elo),
                                   is.na(AGA_perc) & is.na(HGA_perc) ~  elo.prob(home_elo+(0.5*hga_points) - (0.5*aga_points), away_elo) ),
-         elo_prob_away = 1 - elo_prob_home, 
-         pred_margin = map_elo_to_score(elo_prob_home), 
-         winner_name = ifelse(elo_prob_home > 0.5, Home.team, Away.team), 
+         elo_prob_away = 1 - elo_prob_home,
+         pred_margin = map_elo_to_score(elo_prob_home),
+         winner_name = ifelse(elo_prob_home > 0.5, Home.team, Away.team),
          winner_prob = ifelse(elo_prob_home > 0.5,percent( elo_prob_home,0.01), percent( elo_prob_away,0.01)),
          winner_margin =ifelse(-1 < pred_margin & pred_margin < 1,1,  round( abs(pred_margin))))
-# , 
-#          actual_winner = ifelse(hscore > ascore, Home.team, Away.team) , 
-#          actual_margin = abs(hscore - ascore)) 
+# ,
+#          actual_winner = ifelse(hscore > ascore, Home.team, Away.team) ,
+#          actual_margin = abs(hscore - ascore))
 
 
 round_pred_2024 <- fixture_exp_pred_lm %>%
   filter(Round == round) %>%
   select( "RoundNumber"= "Round","HomeTeam"= "Home.team", "AwayTeam"="Away.team",
-          "Winner"= winner_name, "HomeProbability"=elo_prob_home, 
+          "Winner"= winner_name, "HomeProbability"=elo_prob_home,
           "VenueName"=Venue, "PredictedMargin" =pred_margin) %>%
   mutate(HomeProbability = case_when(HomeProbability <= 0.46 ~ HomeProbability - 0.19,
                                      HomeProbability >= 0.54  ~ HomeProbability + 0.19,
-                                     TRUE ~  HomeProbability)) %>% 
+                                     TRUE ~  HomeProbability)) %>%
   mutate(HomeProbability = ifelse(HomeProbability > 1, 0.997, HomeProbability))
 
 write.csv(round_pred_2024, paste0("elo26/round",round,"_2026.csv"), row.names = F)
@@ -491,7 +491,7 @@ write.csv(seas_preds, "elo26/elo_2026_allpreds.csv", row.names = F)
 
 
 
-########################################################################################
+#######################################################################################
 #### ########## ########## Measuring results ########## ########## ########## ##########
 # ##############################################################################################
 # s26_res <- fitzRoy::fetch_results_squiggle(2026) %>%
@@ -530,10 +530,10 @@ write.csv(seas_preds, "elo26/elo_2026_allpreds.csv", row.names = F)
 # #
 # curr_preds <-  read.csv(paste0("elo26/chakri_2026_allpreds.csv")) %>%
 #   mutate(type = "current")
-# 
+#
 # ai_preds <- read.csv("test26/chakri_2026_allpreds.csv") %>%
 #   mutate(type = "ai")
-# 
+#
 # #
 # #
 # optimal <- rbind(new_preds, curr_preds, elo_preds)%>%
@@ -561,7 +561,7 @@ write.csv(seas_preds, "elo26/elo_2026_allpreds.csv", row.names = F)
 #   mutate(type = "average")
 # #
 # #
-# 
+#
 # rbind(new_preds, curr_preds, elo_preds, ai_preds, optimal, mixed)%>%
 #   mutate(PredictedMargin = round(PredictedMargin, 6)) %>%
 #   right_join(s26_res, by = c("RoundNumber", "HomeTeam", "AwayTeam")) %>%
@@ -576,8 +576,8 @@ write.csv(seas_preds, "elo26/elo_2026_allpreds.csv", row.names = F)
 #   summarise(corr_pick = sum(corrpic),
 #             mae = mean(marg_diff), #summarise
 #             totbits = sum(bits))
-# 
-# 
+#
+#
 # #
 # #
 # # testing_preds <- rbind(old_preds, new_preds, curr_preds)%>%
