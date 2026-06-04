@@ -9,7 +9,7 @@ options(scipen = 99)
 # install.packages("gmailr")
 # library(gmailr)
 #
-round <- 12
+round <- 13
 
 # round_pred_2024
 a <- c()
@@ -491,8 +491,8 @@ write.csv(seas_preds, "elo26/elo_2026_allpreds.csv", row.names = F)
 
 
 
-#######################################################################################
-#### ########## ########## Measuring results ########## ########## ########## ##########
+# ######################################################################################
+# ### ########## ########## Measuring results ########## ########## ########## ##########
 # ##############################################################################################
 # s26_res <- fitzRoy::fetch_results_squiggle(2026) %>%
 #   mutate(Margin = hscore-ascore) %>%
@@ -530,10 +530,10 @@ write.csv(seas_preds, "elo26/elo_2026_allpreds.csv", row.names = F)
 # #
 # curr_preds <-  read.csv(paste0("elo26/chakri_2026_allpreds.csv")) %>%
 #   mutate(type = "current")
-#
+# 
 # ai_preds <- read.csv("test26/chakri_2026_allpreds.csv") %>%
 #   mutate(type = "ai")
-#
+# 
 # #
 # #
 # optimal <- rbind(new_preds, curr_preds, elo_preds)%>%
@@ -561,11 +561,11 @@ write.csv(seas_preds, "elo26/elo_2026_allpreds.csv", row.names = F)
 #   mutate(type = "average")
 # #
 # #
-#
+# 
 # rbind(new_preds, curr_preds, elo_preds, ai_preds, optimal, mixed)%>%
 #   mutate(PredictedMargin = round(PredictedMargin, 6)) %>%
 #   right_join(s26_res, by = c("RoundNumber", "HomeTeam", "AwayTeam")) %>%
-#   # filter(RoundNumber == 8) %>%
+#   filter(RoundNumber == 12) %>%
 #   mutate(marg_diff = abs(Margin - PredictedMargin),
 #          corrpic = ifelse(Winner == winner, 1, 0),
 #          corrpic = ifelse(Margin == 0, 1, corrpic),
@@ -576,8 +576,8 @@ write.csv(seas_preds, "elo26/elo_2026_allpreds.csv", row.names = F)
 #   summarise(corr_pick = sum(corrpic),
 #             mae = mean(marg_diff), #summarise
 #             totbits = sum(bits))
-#
-#
+# 
+# 
 # #
 # #
 # # testing_preds <- rbind(old_preds, new_preds, curr_preds)%>%
