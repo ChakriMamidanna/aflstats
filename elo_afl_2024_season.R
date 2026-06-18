@@ -9,7 +9,7 @@ options(scipen = 99)
 # install.packages("gmailr")
 # library(gmailr)
 #
-round <- 14
+round <- 15
 
 # round_pred_2024
 a <- c()
@@ -517,26 +517,26 @@ write.csv(seas_preds, "elo26/elo_2026_allpreds.csv", row.names = F)
 #   mutate(winner = ifelse(Margin > 0, HomeTeam, AwayTeam),
 #          win_marg = abs(Margin))
 # #
-# elo_preds <- read.csv(paste0("elo26/elo_2026_allpreds.csv")) %>%
+# elo_preds_hist <- read.csv(paste0("elo26/elo_2026_allpreds.csv")) %>%
 # #  filter(RoundNumber < 6) %>%
 #   mutate(type = "elo")
 # # # %>%
 # # #   right_join(s25_res, by = c("RoundNumber", "HomeTeam", "AwayTeam")) %>%
 # # #   mutate(marg_diff = Margin - PredictedMargin)
 # #
-# new_preds <- read.csv(paste0("lm26/chakri_2026_allpreds.csv")) %>%
+# new_preds_hist <- read.csv(paste0("lm26/chakri_2026_allpreds.csv")) %>%
 #   mutate(type = "lm")
 # #
 # #
-# curr_preds <-  read.csv(paste0("elo26/chakri_2026_allpreds.csv")) %>%
+# curr_preds_hist <-  read.csv(paste0("elo26/chakri_2026_allpreds.csv")) %>%
 #   mutate(type = "current")
 # 
-# ai_preds <- read.csv("test26/chakri_2026_allpreds.csv") %>%
+# ai_preds_hist <- read.csv("test26/chakri_2026_allpreds.csv") %>%
 #   mutate(type = "ai")
 # 
 # #
 # #
-# optimal <- rbind(new_preds, curr_preds, elo_preds)%>%
+# optimal <- rbind(new_preds_hist, curr_preds_hist, elo_preds_hist)%>%
 #   mutate(PredictedMargin = round(PredictedMargin, 6)) %>%
 #   right_join(s26_res, by = c("RoundNumber", "HomeTeam", "AwayTeam")) %>%
 #   # filter(RoundNumber < 2) %>%
@@ -557,15 +557,15 @@ write.csv(seas_preds, "elo26/elo_2026_allpreds.csv", row.names = F)
 #          "VenueName", "PredictedMargin", "type")
 # #
 # #
-# mixed <- read.csv(paste0("mix26/mix_2026_allpreds.csv")) %>%
+# mixed_hist <- read.csv(paste0("mix26/mix_2026_allpreds.csv")) %>%
 #   mutate(type = "average")
 # #
 # #
 # 
-# rbind(new_preds, curr_preds, elo_preds, ai_preds, optimal, mixed)%>%
+# rbind(new_preds_hist, curr_preds_hist, elo_preds_hist, ai_preds_hist, optimal, mixed_hist)%>%
 #   mutate(PredictedMargin = round(PredictedMargin, 6)) %>%
 #   right_join(s26_res, by = c("RoundNumber", "HomeTeam", "AwayTeam")) %>%
-#   filter(RoundNumber == 12) %>%
+#   filter(RoundNumber == 14) %>%
 #   mutate(marg_diff = abs(Margin - PredictedMargin),
 #          corrpic = ifelse(Winner == winner, 1, 0),
 #          corrpic = ifelse(Margin == 0, 1, corrpic),

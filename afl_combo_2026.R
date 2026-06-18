@@ -1,8 +1,10 @@
 library(tidyverse)
+setwd("~/Documents/r_repos/aflstats")
 
-round <- 14
+round <- 15
 
-ai_preds <- read.csv(paste0("test26/chakri_round_optibits", round, ".csv"))
+ai_preds <- read.csv(paste0("test26/chakri_round_optibits", round, ".csv")) %>%
+  mutate(type = "ai")
 
 elo_preds <- read.csv(paste0("elo26/round",round,"_2026.csv")) %>%
   mutate(type = "elo")
@@ -14,7 +16,7 @@ lm_preds <- read.csv(paste0("lm26/chakri_round_optibits",round,".csv")) %>%
   mutate(type = "lm")
 
 
-mixed <- rbind(lm_preds, elo_preds)%>%
+mixed <- rbind(lm_preds, elo_preds, ai_preds)%>%
   mutate(PredictedMargin = round(PredictedMargin, 6)) %>%
   group_by(RoundNumber, HomeTeam) %>%
   mutate(HomeProbability = mean(HomeProbability),
