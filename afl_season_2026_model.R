@@ -19,7 +19,7 @@ suppressPackageStartupMessages({
 })
 
 # Round to predict
-rd <- 16
+rd <- 17
 
 # Knobs you can tune
 LAST_N_GAMES <- 6       # rolling horizon (if you rebuild ratings upstream)
