@@ -9,7 +9,7 @@ options(scipen = 99)
 # install.packages("gmailr")
 # library(gmailr)
 #
-round <- 18
+round <- 19
 
 # round_pred_2024
 a <- c()
@@ -565,7 +565,7 @@ write.csv(seas_preds, "elo26/elo_2026_allpreds.csv", row.names = F)
 # rbind(new_preds_hist, curr_preds_hist, elo_preds_hist, ai_preds_hist, optimal, mixed_hist)%>%
 #   mutate(PredictedMargin = round(PredictedMargin, 6)) %>%
 #   right_join(s26_res, by = c("RoundNumber", "HomeTeam", "AwayTeam")) %>%
-#   filter(RoundNumber == 14) %>%
+#   # filter(RoundNumber == 18) %>%
 #   mutate(marg_diff = abs(Margin - PredictedMargin),
 #          corrpic = ifelse(Winner == winner, 1, 0),
 #          corrpic = ifelse(Margin == 0, 1, corrpic),
