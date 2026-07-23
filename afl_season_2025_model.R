@@ -3,7 +3,7 @@ library(tidyverse)
 library(zoo)
 # library(gmailr)
 setwd("~/Documents/r_repos/aflstats")
-rd = 19
+rd = 20
 # pred_bits_opti
 # Load AFL data using fitzRoy
 # data <- fitzRoy::fetch_results_afltables(2015, 2022)
