@@ -170,3 +170,12 @@ RoundNumber,HomeTeam,AwayTeam,Winner,HomeProbability,VenueName,PredictedMargin
 20,Footscray,Richmond,Footscray,0.861787555,Marvel Stadium,39.349276
 20,Brisbane Lions,Port Adelaide,Brisbane Lions,0.826630467,Gabba,26.230106
 20,North Melbourne,St Kilda,St Kilda,0.182969656,Marvel Stadium,-10.662612
+21,Collingwood,Geelong,Collingwood,0.510655022,MCG,1.053807
+21,Fremantle,Footscray,Fremantle,0.872362758,Optus Stadium,37.349838
+21,St Kilda,Sydney,Sydney,0.484996772,Marvel Stadium,-3.769326323
+21,Hawthorn,North Melbourne,Hawthorn,0.892377173,UTAS Stadium,44.181383
+21,Port Adelaide,GWS,Port Adelaide,0.648130365,Adelaide Oval,4.53035
+21,Carlton,Brisbane Lions,Brisbane Lions,0.196628557,Marvel Stadium,-21.321657
+21,Richmond,West Coast,West Coast,0.256257124,MCG,-11.095443
+21,Gold Coast,Melbourne,Melbourne,0.455172106,People First Stadium,-8.497096
+21,Essendon,Adelaide,Adelaide,0.104070931,Marvel Stadium,-38.717167
