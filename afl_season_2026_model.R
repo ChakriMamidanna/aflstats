@@ -19,7 +19,7 @@ suppressPackageStartupMessages({
 })
 
 # Round to predict
-rd <- 21
+rd <- 22
 
 # Knobs you can tune
 LAST_N_GAMES <- 6       # rolling horizon (if you rebuild ratings upstream)
@@ -517,7 +517,7 @@ write.csv(pred_bits_opti, paste0("test26/chakri_round_optibits", rd, ".csv"), ro
   
 
 message("Done. Files written to: ",
-        "\n  - lm26/predfull_", rd, ".csv",
-        "\n  - lm26/chakri_round_", rd, ".csv",
-        "\n  - lm26/chakri_round_optibits", rd, ".csv",
-        "\n  - lm26/chakri_2026_allpreds.csv")
+        "\n  - test26/predfull_", rd, ".csv",
+        "\n  - test26/chakri_round_", rd, ".csv",
+        "\n  - test26/chakri_round_optibits", rd, ".csv",
+        "\n  - test26/chakri_2026_allpreds.csv")

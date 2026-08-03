@@ -1,7 +1,7 @@
 library(tidyverse)
 setwd("~/Documents/r_repos/aflstats")
 
-round <- 21
+round <- 22
 
 ai_preds <- read.csv(paste0("test26/chakri_round_optibits", round, ".csv")) %>%
   mutate(type = "ai")
@@ -27,8 +27,10 @@ mixed <- rbind( elo_preds, ai_preds)%>%
                                      HomeProbability < 0 ~ 0.01, 
                                      TRUE ~ HomeProbability),
          PredictedMargin2 = max((ifelse(type == "elo" & HomeProbability > 0.5, PredictedMargin, 0))),
-         PredictedMargin3 = min((ifelse(type == "elo" & HomeProbability < 0.5, PredictedMargin, 0))), 
-         PredictedMargin = ifelse(HomeProbability > 0.5, PredictedMargin2, PredictedMargin3)) %>%
+         PredictedMargin3 = min((ifelse(type == "elo" & HomeProbability < 0.5, PredictedMargin, 0))),
+         PredictedMargin4 = mean(PredictedMargin) , 
+         PredictedMargin = ifelse(HomeProbability > 0.5, PredictedMargin2, PredictedMargin3), 
+         PredictedMargin = ifelse(PredictedMargin == 0, PredictedMargin4, PredictedMargin)) %>%
   ungroup() %>%
   mutate(Winner = ifelse(HomeProbability > 0.5, HomeTeam, AwayTeam)) %>%
   select(-type) %>%
