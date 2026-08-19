@@ -1,7 +1,7 @@
 library(tidyverse)
 setwd("~/Documents/r_repos/aflstats")
 
-round <- 22
+round <- 23
 
 ai_preds <- read.csv(paste0("test26/chakri_round_optibits", round, ".csv")) %>%
   mutate(type = "ai")
