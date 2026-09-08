@@ -19,7 +19,7 @@ suppressPackageStartupMessages({
 })
 
 # Round to predict
-rd <- 25
+rd <- 27
 
 # Knobs you can tune
 LAST_N_GAMES <- 6       # rolling horizon (if you rebuild ratings upstream)
@@ -77,7 +77,7 @@ if (!"Venue" %in% names(result_orig_withstats25)) {
 }
 
 
-a25 <- fitzRoy::fetch_player_stats(2026)
+a25 <- fitzRoy::fetch_player_stats(2026)  
 
 a25_clean_home <- a25 %>%
   filter(status == "CONCLUDED") %>%

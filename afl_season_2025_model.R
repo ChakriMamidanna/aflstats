@@ -3,7 +3,7 @@ library(tidyverse)
 library(zoo)
 # library(gmailr)
 setwd("~/Documents/r_repos/aflstats")
-rd = 25
+rd = 27
 # pred_bits_opti
 # Load AFL data using fitzRoy
 # data <- fitzRoy::fetch_results_afltables(2015, 2022)
@@ -107,7 +107,7 @@ afl_player_stats <- c()
 # saveRDS(result_orig_withstats, "result_withstats_18to25.rds")
 result_orig_withstats <- readRDS("result_withstats_18to25.rds")
 
-a25 <- fitzRoy::fetch_player_stats_afl(2026)
+a25 <- fitzRoy::fetch_player_stats_afl(2026) 
 
 a25_clean_home <- a25 %>%
   filter(status == "CONCLUDED") %>%

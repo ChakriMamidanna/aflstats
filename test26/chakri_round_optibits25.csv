@@ -1,3 +1,3 @@
-"RoundNumber","HomeTeam","AwayTeam","Winner","HomeProbability","VenueName","PredictedMargin"
-25,"Footscray","Collingwood","Collingwood",0.198707646948382,"MCG",-8.15412265721824
-25,"Melbourne","Carlton","Melbourne",0.76906110583287,"MCG",11.0882412622988
+RoundNumber,HomeTeam,AwayTeam,Winner,HomeProbability,VenueName,PredictedMargin
+25,Footscray,Collingwood,Collingwood,0.258707647,MCG,-8.154122657
+25,Melbourne,Carlton,Melbourne,0.709061106,MCG,11.08824126

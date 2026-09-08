@@ -1,0 +1,5 @@
+"compSeason.name","round.roundNumber","home.team.name","away.team.name","venue.name","Home.OffensiveRating","Home.DefensiveRating","Away.OffensiveRating","Away.DefensiveRating","GamesPlayed","GamesWon","HomeGroundAdvantage","PredictedMargin","pr","Winner"
+"2026 Toyota AFL Premiership",26,"Fremantle","Hawthorn","Optus Stadium",21.3100378653869,-19.0073006087202,12.8562161330992,-3.0205289608542,96,61,0.12,-1.36771059233089,0.402320168805838,"Hawthorn"
+"2026 Toyota AFL Premiership",26,"Geelong","Carlton","MCG",18.3722806455118,2.25519637144468,-1.36278137569961,-7.29703388596833,23,16,0.12,10.6356157064366,0.703877807219716,"Geelong"
+"2026 Toyota AFL Premiership",26,"Sydney","Brisbane Lions","SCG",24.6506018312726,-8.46312861865755,8.08442502337893,-4.51080144390483,93,58,0.11690206066219,5.43038559746179,0.579013220122899,"Sydney"
+"2026 Toyota AFL Premiership",26,"Adelaide","Footscray","Adelaide Oval",14.5856494887902,13.5102543419165,-7.76346631732896,-10.65131929395,101,56,0.055528463447168,14.1049989206282,0.773904460135232,"Adelaide"

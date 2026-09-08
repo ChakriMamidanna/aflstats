@@ -9,7 +9,7 @@ options(scipen = 99)
 # install.packages("gmailr")
 # library(gmailr)
 #
-round <- 25
+round <- 27
 
 # round_pred_2024
 a <- c()
@@ -101,8 +101,8 @@ afl_player_stats <- c()
 result_orig_withstats <- readRDS("result_withstats_16to25.rds")
 
 # dput(names(result_orig_withstats24))
-add_2024_stats <- fitzRoy::fetch_player_stats_afl(2026) #%>%
-  # filter(round.roundNumber == 0)
+add_2024_stats <- fitzRoy::fetch_player_stats_afl(2026) # %>%
+  # filter(round.roundNumber != 26)
 
 
 add_2024_stats_clean_home <- add_2024_stats %>%
